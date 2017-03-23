@@ -1,0 +1,12 @@
+node_modules
+.gitignore
+.git
+.DS_Store
+test
+.travis.yml
+appveyor.yml
+.codeclimate.yml
+.eslinkignore
+.eslintrc
+.vscode
+coverage

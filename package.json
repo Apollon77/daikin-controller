@@ -1,0 +1,33 @@
+{
+  "name": "daikin-controller",
+  "version": "0.1.0",
+  "description": "Control Daikin Air Conditioner devices using nodejs",
+  "author": "Ingo Fischer <ingo@fischer-ka.de>",
+  "contributors": [],
+  "homepage": "",
+  "license": "MIT",
+  "keywords": [
+    "Daikin", "Air Conditioner"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Apollon77/daikin-controller"
+  },
+  "dependencies": {
+    "node-rest-client": "^3.0.7"
+  },
+  "devDependencies": {
+    "mocha": "^3.2.0",
+    "chai": "^3.4.1",
+    "istanbul": "*",
+    "sinon": "^2.0.0",
+    "nock": "^9.0.2"
+},
+  "bugs": {
+    "url": "https://github.com/Apollon77/daikin-controller/issues"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "node node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec"
+  }
+}

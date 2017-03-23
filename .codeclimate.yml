@@ -1,0 +1,26 @@
+---
+engines:
+  duplication:
+    enabled: true
+    checks:
+      Similar code:
+        enabled: false
+      Identical code:
+        enabled: false
+    exclude_fingerprints:
+    config:
+      languages:
+      - javascript
+  eslint:
+    enabled: true
+    checks:
+      complexity:
+        enabled: false
+    exclude_fingerprints:
+  fixme:
+    enabled: true
+ratings:
+  paths:
+  - "**.js"
+exclude_paths:
+- test/
