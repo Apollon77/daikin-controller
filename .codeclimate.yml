@@ -16,6 +16,8 @@ engines:
     checks:
       complexity:
         enabled: false
+      no-native-reassign:
+        enabled: false
     exclude_fingerprints:
   fixme:
     enabled: true
