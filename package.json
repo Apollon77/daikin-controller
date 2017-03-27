@@ -1,6 +1,6 @@
 {
   "name": "daikin-controller",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Control Daikin Air Conditioner devices using nodejs",
   "author": "Ingo Fischer <ingo@fischer-ka.de>",
   "contributors": [],
