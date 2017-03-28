@@ -2,7 +2,7 @@
 Control Daikin Air Conditioner devices using nodejs
 
 
-##Todo
+## Todo
 * Logging
 * README
 
