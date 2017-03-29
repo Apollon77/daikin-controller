@@ -113,7 +113,7 @@ describe('Test DaikinACTypes', function() {
             'fanDirectionModeH': 0
         };
         var req =   nock('http://127.0.0.1')
-                    .post('/aircon/set_control_info', /pow=0&mode=3&stemp=23&shum=0&f_rate=A&f_dir=0/)
+                    .post('/aircon/set_control_info', /pow=0&mode=3&stemp=23.0&shum=0&f_rate=A&f_dir=0/)
                     .reply(200, 'ret=OK,adv=');
         var daikin = new DaikinACRequest('127.0.0.1');
         var res = daikin.setACControlInfo(vals, function(err, ret, daikinResponse) {
@@ -149,7 +149,7 @@ describe('Test DaikinACTypes', function() {
             'shum': 0
         };
         var req =   nock('http://127.0.0.1')
-                    .post('/aircon/set_control_info', /pow=0&mode=3&stemp=24&shum=0/)
+                    .post('/aircon/set_control_info', /pow=0&mode=3&stemp=24.0&shum=0/)
                     .reply(200, 'ret=PARAM NG,adv=');
         var daikin = new DaikinACRequest('127.0.0.1');
         var res = daikin.setACControlInfo(vals, function(err, ret, daikinResponse) {
