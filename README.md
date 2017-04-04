@@ -149,9 +149,25 @@ Reboot the Wifi Controller. After this the Basic data are requested agsin and up
 
 ### DaikinACTypes.FanDirection;
 
+### DaikinDiscover.discovery(waitForNrDevices, callback)
+This methods sends UDP Broadcasts into the network to discover Daikin devices.
 
+Example:
+
+```
+var Daikin = require('../../index.js');
+
+Daikin.discover(2, function(result) {
+    console.log(JSON.stringify(result));
+});
+```
+The first Parameter is the number of found devices after which the method stops searching further, else it will do 10 Tries with a 1 second delay. The second parameter is the callback method called with the result.
+
+Result is an Object with the IP as the key and some data as value.
 
 ## Todo
+* Make discover method ebetter configurable
+
 ### Implement missing endpoints (if someone needs them)
 The following endpoints  (according to ...) are currently not implemented and can be if needed or if I find time to reverse engineer how they really work.
 

@@ -18,6 +18,8 @@ engines:
         enabled: false
       no-native-reassign:
         enabled: false
+      max-statements:
+        enabled: false
     exclude_fingerprints:
   fixme:
     enabled: true
