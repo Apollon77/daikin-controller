@@ -1,14 +1,6 @@
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
 /*jshint expr: true*/
-/* jshint -W097 */// jshint strict:false
-/*jslint node: true */
-/*jshint expr: true*/
-
-/*
-root@cubietruck4:~# curl http://192.168.178.49/aircon/get_day_power_ex?days=2;echo
-ret=OK,curr_day_heat=0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0,prev_1day_heat=0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0,curr_day_cool=0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0,prev_1day_cool=0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0/0
-*/
 
 var expect = require('chai').expect;
 var nock = require('nock');
@@ -17,7 +9,7 @@ var DaikinAC = require('../lib/DaikinAC');
 
 var logger = null;
 //logger = console.log;
-options = {'logger': logger};
+var options = {'logger': logger};
 
 describe('Test DaikinAC', function() {
 
@@ -182,7 +174,7 @@ describe('Test DaikinAC', function() {
                     .post('/common/set_led', /led=0/)
                     .reply(200, 'ret=OK')
                     .get('/common/basic_info')
-                    .reply(200, 'ret=OK,type=aircon,reg=eu,dst=1,ver=2_6_0,pow=0,err=0,location=0,name=%4b%6c%69%6d%61%20%4a%61%6e%61,icon=0,method=home only,port=30050,id=,pw=,lpw_flag=0,adp_kind=2,pv=0,cpv=0,cpv_minor=00,led=0,en_setzone=1,mac=A408EACC91D4,adp_mode=run,en_hol=0,grp_name=%4b%69%6e%64%65%72,en_grp=1')
+                    .reply(200, 'ret=OK,type=aircon,reg=eu,dst=1,ver=2_6_0,pow=0,err=0,location=0,name=%4b%6c%69%6d%61%20%4a%61%6e%61,icon=0,method=home only,port=30050,id=,pw=,lpw_flag=0,adp_kind=2,pv=0,cpv=0,cpv_minor=00,led=0,en_setzone=1,mac=A408EACC91D4,adp_mode=run,en_hol=0,grp_name=%4b%69%6e%64%65%72,en_grp=1');
         var daikin = new DaikinAC('127.0.0.1', options, function(err) {
             expect(err).to.be.null;
             daikin.getCommonRemoteMethod(function(err, response) {
