@@ -17,10 +17,10 @@
     "node-rest-client": "^3.1.0"
   },
   "devDependencies": {
-    "mocha": "^3.2.0",
+    "mocha": "^4.0.1",
     "chai": "^3.4.1",
     "istanbul": "*",
-    "sinon": "^2.0.0",
+    "sinon": "^4.1.1",
     "nock": "^9.0.2"
 },
   "bugs": {
