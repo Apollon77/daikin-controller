@@ -17,8 +17,8 @@
     "node-rest-client": "^3.1.0"
   },
   "devDependencies": {
-    "mocha": "^4.0.1",
-    "chai": "^3.4.1",
+    "mocha": "^4.1.0",
+    "chai": "^4.1.2",
     "istanbul": "*",
     "sinon": "^4.1.1",
     "nock": "^9.0.2"
