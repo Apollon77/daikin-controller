@@ -196,13 +196,13 @@ describe('Test DaikinAC', function() {
                         daikin.getACWeekPower(function(err, response) {
                             expect(err).to.be.null;
                             expect(Object.keys(response).length).to.be.equal(2);
-                            expect(response.data).to.be.an.array;
+                            expect(response.data).to.be.an('array');
                             expect(response.data[3]).to.be.equal(3);
 
                             daikin.getACYearPower(function(err, response) {
                                 expect(err).to.be.null;
                                 expect(Object.keys(response).length).to.be.equal(2);
-                                expect(response.previousYear).to.be.an.array;
+                                expect(response.previousYear).to.be.an('array');
                                 expect(response.previousYear.length).to.be.equal(12);
                                 expect(response.previousYear[3]).to.be.equal(3);
                                 expect(response.currentYear.length).to.be.equal(3);
@@ -211,12 +211,12 @@ describe('Test DaikinAC', function() {
                                 daikin.getACWeekPowerExtended(function(err, response) {
                                     expect(err).to.be.null;
                                     expect(Object.keys(response).length).to.be.equal(3);
-                                    expect(response.heatWeek).to.be.an.array;
+                                    expect(response.heatWeek).to.be.an('array');
 
                                     daikin.getACYearPowerExtended(function(err, response) {
                                         expect(err).to.be.null;
                                         expect(Object.keys(response).length).to.be.equal(4);
-                                        expect(response.heatCurrentYear).to.be.an.array;
+                                        expect(response.heatCurrentYear).to.be.an('array');
 
                                         daikin.rebootAdapter(function(err, response) {
                                             expect(err).to.be.null;
