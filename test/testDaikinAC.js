@@ -206,7 +206,7 @@ describe('Test DaikinAC', function() {
                                 expect(response.previousYear.length).to.be.equal(12);
                                 expect(response.previousYear[3]).to.be.equal(3);
                                 expect(response.currentYear.length).to.be.equal(3);
-                                expect(response.currentYear[1]).to.be.equal(3);
+                                expect(response.currentYear[1]).to.be.equal(1);
 
                                 daikin.getACWeekPowerExtended(function(err, response) {
                                     expect(err).to.be.null;
