@@ -41,7 +41,7 @@ FTX50KV1B, FTX60KV1B
 
 The library is based on the great work of the unofficial Daikin API documentation project (https://github.com/ael-code/daikin-control). Additional informations on parameters and values can be found there.
 
-## Usage example (example for SerialRequestResposeTransport with D0Protocol)
+## Usage example
 
 ```
 var options = {'logger': console.log}; // optional logger method to get debug logging
@@ -80,7 +80,7 @@ function (err, ret, response)
 
 ### DaikinAC(ip, options, callback)
 Constructor to initialize the Daikin instance to interact with the device.
-Usage see example above, the "options" paramater is optional.
+Usage see example above, the "options" paraeter is optional. Using "options" you can set a **logger** function (see example). Additionally you can set the special flag **useGetToPost** for older Firmwares of the Daikin-WLAN-Interfaces (<1.4) that only supported HTTP GET also to set data. So if you get errors using it then you try if it works better with this flag.
 The callback function is called after initializing the device and requesting currentCommonBasicInfo and currentACModelInfo.
 
 ### setUpdate(updateInterval, callback)
@@ -166,7 +166,7 @@ The first Parameter is the number of found devices after which the method stops 
 Result is an Object with the IP as the key and some data as value.
 
 ## Todo
-* Make discover method ebetter configurable
+* Make discover method better configurable
 
 ### Implement missing endpoints (if someone needs them)
 The following endpoints  (according to ...) are currently not implemented and can be if needed or if I find time to reverse engineer how they really work.
