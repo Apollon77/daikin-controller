@@ -7,7 +7,6 @@ engines:
         enabled: false
       Identical code:
         enabled: false
-    exclude_fingerprints:
     config:
       languages:
       - javascript
@@ -20,7 +19,6 @@ engines:
         enabled: false
       max-statements:
         enabled: false
-    exclude_fingerprints:
   fixme:
     enabled: true
 ratings:
