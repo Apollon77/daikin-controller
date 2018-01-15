@@ -1,3 +1,6 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=7e0ae7b133cfa94717b9cedd3067f1f97a461d998a8392307672fc4bd445c0e7
 os:
   - linux
   - osx
@@ -6,9 +9,12 @@ node_js:
   - '4'
   - '6'
   - '8'
+before_install:
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then chmod +x ./cc-test-reporter; fi'
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./cc-test-reporter before-build; fi'
 after_success:
-  - npm install -g codeclimate-test-reporter
-  - codeclimate-test-reporter < coverage/lcov.info
+  - 'if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi'
 env:
   - CXX=g++-4.8
 addons:
@@ -17,5 +23,3 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
-  code_climate:
-    repo_token: 7e0ae7b133cfa94717b9cedd3067f1f97a461d998a8392307672fc4bd445c0e7
