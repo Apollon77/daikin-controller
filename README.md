@@ -73,7 +73,7 @@ The callback method should have aa signature like
 function (err, ret, response)
 ```
 * **err**: null on success or a string value when an error has occured
-* **ret**: The return value from the device. Can currently be "OK", "PARAM NG" (Wrong Parameters) or "ADV_NG" (Wrong ADV?)
+* **ret**: The return value from the device. Can currently be "OK", "PARAM NG" (Wrong Parameters) or "ADV NG" (Wrong ADV)
 * **response**: Object that contains the returned fields as keys. Mapping from device fieldnames to library field names see lib/DaikinACTypes.js
 
 ## Method description
@@ -132,6 +132,16 @@ Get the "Extended Week-Power" details from the Daikin-Device. The callback will 
 ### getACYearPowerExtended(callback)
 Get the "Extended Year-Power" details from the Daikin-Device. The callback will be called with the result.
 
+### setACSpecialMode(values, callback)
+Send an update for the "Special Mode" data to the device. values is an object with the following possible keys:
+* state: Integer, enable or disable the special mode, you can also use DaikinAC-SpecialModeState for allowed values in human readable format
+* kind: Integer, the kind of the special mode, you can also use DaikinAC-SpecialModeKind for allowed values in human readable format
+
+Response:
+* specialMode: String, the current special mode, you can also use DaikinAC-SpecialModeResponse for allowed values in human readable format
+
+It's possible to set STREAMER mode for a turned off device. POWERFUL/ECONOMY modes will only work when the the device is turned on. 
+
 ### enableAdapterLED(callback)
 Enables the Wifi Controller LEDs.
 
@@ -148,6 +158,12 @@ Reboot the Wifi Controller. After this the Basic data are requested agsin and up
 ### DaikinACTypes.FanRate;
 
 ### DaikinACTypes.FanDirection;
+
+### DaikinACTypes.SpecialModeState;
+
+### DaikinACTypes.SpecialModeKind;
+
+### DaikinACTypes.SpecialModeResponse;
 
 ### DaikinDiscover.discovery(waitForNrDevices, callback)
 This methods sends UDP Broadcasts into the network to discover Daikin devices.
@@ -183,4 +199,3 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_scdltimer_info and set_scdltimer_info
 * /aircon/get_scdltimer_body and set_scdltimer_body
 * /aircon/get_day_paower_ex
-* /aircon/set_special_mode
