@@ -30,9 +30,9 @@ describe('Test DaikinAC', function() {
     it('constructor without update but error', function (done) {
         var req =   nock('http://127.0.0.1')
                     .get('/common/basic_info')
-                    .reply(200, 'ret=ADV_NG,bla=1');
+                    .reply(200, 'ret=ADV NG,bla=1');
         var daikin = new DaikinAC('127.0.0.1', function (err, res) {
-            expect(err).to.be.equal('Wrong ADV: ret=ADV_NG,bla=1');
+            expect(err).to.be.equal('Wrong ADV: ret=ADV NG,bla=1');
             done();
         });
     });
