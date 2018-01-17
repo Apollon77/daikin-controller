@@ -140,7 +140,7 @@ Send an update for the "Special Mode" data to the device. values is an object wi
 Response:
 * specialMode: String, the current special mode, you can also use DaikinAC-SpecialModeResponse for allowed values in human readable format
 
-It's possible to set STREAMER mode for a turned off device. POWERFUL/ECONOMY modes will only work when the the device is turned on. 
+It's possible to set STREAMER mode for a turned off device. POWERFUL/ECONOMY modes will only work when the the device is turned on.
 
 ### enableAdapterLED(callback)
 Enables the Wifi Controller LEDs.
@@ -199,3 +199,13 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_scdltimer_info and set_scdltimer_info
 * /aircon/get_scdltimer_body and set_scdltimer_body
 * /aircon/get_day_paower_ex
+
+## Changelog
+
+### v1.1.0 (xx.01.2018)
+* add setACSpecialMode (thanks to @b-straub)
+
+## Changelog
+
+### v1.0.0 (2017)
+* initial release
