@@ -171,7 +171,7 @@ describe('Test DaikinACTypes', function() {
         var req = nock('http://127.0.0.1')
                     .get('/aircon/set_special_mode?set_spmode=1&spmode_kind=1')
                     .reply(200, 'ret=OK,adv=\'2\'');
-        var daikin = new DaikinACRequest('127.0.0.1');
+        var daikin = new DaikinACRequest('127.0.0.1', {'useGetToPost': true});
         var res = daikin.setACSpecialMode(vals, function(err, ret, daikinResponse) {
             //console.log(JSON.stringify(daikinResponse));
             expect(req.isDone()).to.be.true;
@@ -186,7 +186,7 @@ describe('Test DaikinACTypes', function() {
         var vals = {
             'state': 1
         };
-        var daikin = new DaikinACRequest('127.0.0.1');
+        var daikin = new DaikinACRequest('127.0.0.1', {'useGetToPost': true});
         var res = daikin.setACSpecialMode(vals, function(err, ret, daikinResponse) {
             //console.log(JSON.stringify(daikinResponse));
             expect(daikinResponse).to.be.undefined;
@@ -204,7 +204,7 @@ describe('Test DaikinACTypes', function() {
         var req =   nock('http://127.0.0.1')
                     .get('/aircon/set_special_mode?set_spmode=1&spmode_kind=1')
                     .reply(200, 'ret=ADV NG,adv=');
-        var daikin = new DaikinACRequest('127.0.0.1');
+        var daikin = new DaikinACRequest('127.0.0.1', {'useGetToPost': true});
         var res = daikin.setACSpecialMode(vals, function(err, ret, daikinResponse) {
             //console.log(JSON.stringify(daikinResponse));
             //console.log(JSON.stringify(err));
