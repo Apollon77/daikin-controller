@@ -1,4 +1,6 @@
 # daikin-controller
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/Apollon77/daikin-controller.svg)](https://greenkeeper.io/)
 [![NPM version](http://img.shields.io/npm/v/daikin-controller.svg)](https://www.npmjs.com/package/daikin-controller)
 [![Downloads](https://img.shields.io/npm/dm/daikin-controller.svg)](https://www.npmjs.com/package/daikin-controller)
 [![Dependency Status](https://gemnasium.com/badges/github.com/Apollon77/daikin-controller.svg)](https://gemnasium.com/github.com/Apollon77/daikin-controller)
