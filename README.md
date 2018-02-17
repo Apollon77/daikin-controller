@@ -202,10 +202,11 @@ The following endpoints  (according to ...) are currently not implemented and ca
 
 ## Changelog
 
+### v1.1.1 (17.02.2018)
+* fix for setACSpecialMode
+
 ### v1.1.0 (xx.01.2018)
 * add setACSpecialMode (thanks to @b-straub)
-
-## Changelog
 
 ### v1.0.0 (2017)
 * initial release
