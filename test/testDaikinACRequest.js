@@ -202,7 +202,7 @@ describe('Test DaikinACTypes', function() {
             expect(req.isDone()).to.be.true;
             expect(daikinResponse).to.be.null;
             expect(ret).to.be.null;
-            expect(err).to.be.equal('Communication error: ETIMEDOUT');
+            expect(err.toString()).to.be.equal('Error: Error while communicating with Daikin device: ETIMEDOUT');
             done();
         });
     });

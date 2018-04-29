@@ -204,6 +204,9 @@ The following endpoints  (according to ...) are currently not implemented and ca
 
 ## Changelog
 
+### v1.1.2 (29.04.2018)
+* fix error handling for communication errors
+
 ### v1.1.1 (17.02.2018)
 * fix for setACSpecialMode
 
