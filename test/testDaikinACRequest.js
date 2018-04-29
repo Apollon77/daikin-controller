@@ -163,4 +163,48 @@ describe('Test DaikinACTypes', function() {
         });
     });
 
+    it('set_control_info Comm-Error', function (done) {
+        var vals = {
+            'power': false,
+            'mode': 3,
+            'stemp': 24,
+            'shum': 0
+        };
+        var req =   nock('http://127.0.0.1')
+                    .post('/aircon/set_control_info', /pow=0&mode=3&stemp=24.0&shum=0/)
+                    .reply(500, 'Error 42');
+        var daikin = new DaikinACRequest('127.0.0.1');
+        var res = daikin.setACControlInfo(vals, function(err, ret, daikinResponse) {
+            //console.log(JSON.stringify(daikinResponse));
+            //console.log(JSON.stringify(err));
+            expect(req.isDone()).to.be.true;
+            expect(daikinResponse).to.be.null;
+            expect(ret).to.be.null;
+            expect(err).to.be.equal('Cannot parse response: Error 42');
+            done();
+        });
+    });
+
+    it('set_control_info Net-Error', function (done) {
+        var vals = {
+            'power': false,
+            'mode': 3,
+            'stemp': 24,
+            'shum': 0
+        };
+        var req =   nock('http://127.0.0.1')
+                    .post('/aircon/set_control_info', /pow=0&mode=3&stemp=24.0&shum=0/)
+                    .replyWithError({code: 'ETIMEDOUT'});
+        var daikin = new DaikinACRequest('127.0.0.1');
+        var res = daikin.setACControlInfo(vals, function(err, ret, daikinResponse) {
+            //console.log(JSON.stringify(daikinResponse));
+            //console.log(JSON.stringify(err));
+            expect(req.isDone()).to.be.true;
+            expect(daikinResponse).to.be.null;
+            expect(ret).to.be.null;
+            expect(err).to.be.equal('Communication error: ETIMEDOUT');
+            done();
+        });
+    });
+
 });
