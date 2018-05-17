@@ -41,6 +41,8 @@ ATX20KV1B, ATX25KV1B, ATX35KV1B, , ATXL25J2V1B, ATXL35J2V1B,
 Compatible units in combination with BRP069A44 (?):
 FTX50KV1B, FTX60KV1B
 
+**Important: Type "B" Wifi adapters from Daikin (firmware 1.4.x) also were reported to work but need to use the special option "useGetToPost" in the options!**
+
 The library is based on the great work of the unofficial Daikin API documentation project (https://github.com/ael-code/daikin-control). Additional informations on parameters and values can be found there.
 
 ## Usage example
