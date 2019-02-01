@@ -205,6 +205,9 @@ The following endpoints  (according to ...) are currently not implemented and ca
 
 ## Changelog
 
+### v1.1.3 (01.02.2019)
+* optimize handling of communication errors
+
 ### v1.1.2 (29.04.2018)
 * fix error handling for communication errors
 
