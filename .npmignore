@@ -12,3 +12,4 @@ appveyor.yml
 coverage
 .idea
 package-lock.json
+.eslintignore
