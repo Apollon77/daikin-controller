@@ -205,6 +205,9 @@ The following endpoints  (according to ...) are currently not implemented and ca
 
 ## Changelog
 
+### v1.1.5 (25.06.2019)
+* also set headers on daikin requests
+
 ### v1.1.4 (25.06.2019)
 * increase timeouts to 5s
 
