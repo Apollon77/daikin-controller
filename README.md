@@ -205,6 +205,9 @@ The following endpoints  (according to ...) are currently not implemented and ca
 
 ## Changelog
 
+### v1.1.4 (25.06.2019)
+* increase timeouts to 5s
+
 ### v1.1.3 (01.02.2019)
 * optimize handling of communication errors
 
