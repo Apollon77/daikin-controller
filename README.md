@@ -26,8 +26,9 @@ The Daikin Device needs to be equipped with a Daikin Wifi controller. Normally a
 | BRP069B45 | Comfora | FTXP-M | works with 'useGetToPost' |
 | BRP069B45 | Sensira (Austria) | FTXF-A | works with 'useGetToPost' |
 | BRP069B45 | Siesta (Germany) | ATXF-A | not tested, but should work (with 'useGetToPost') |
- * = placeholder for color of device (example: FTXA20AW ... "W" = White)
- - = placeholder for cooling performance, as an approximate value (example: FTXA20AW … "20" = 2,0 kW)
+
+(*) is a placeholder for color of device (example: FTXA20AW ... "W" = White)
+(-) is a placeholder for cooling performance, as an approximate value (example: FTXA20AW … "20" = 2,0 kW)
 
 *What is meant by "with 'useGetToPost'":*
 ```
