@@ -20,17 +20,17 @@ The Daikin Device needs to be equipped with a Daikin Wifi controller. Normally a
 | wireless adapter | device name | device series | test result |
 | --- | --- | --- | --- |
 | BRP069B42 | Urura Sarara | FTXZ-N | not tested, but should work (with 'useGetToPost')  |
-| BRP084A42-1 | Stylish | CTXA-A; FTXA-A; FTXA-B | works with 'useGetToPost' |
-| BRP069B41 | Emura | FTXJ-M | works with 'useGetToPost' |
+| BRP084A42-1 | Stylish | CTXA-A*; FTXA-A*; FTXA-B* | works with 'useGetToPost' |
+| BRP069B41 | Emura | FTXJ-M* | works with 'useGetToPost' |
 | BRP069B41 | Perfera | CTXM-N; FTXM-N | works with 'useGetToPost' |
 | BRP069B45 | Comfora | FTXP-M | works with 'useGetToPost' |
 | BRP069B45 | Sensira (Austria) | FTXF-A | works with 'useGetToPost' |
 | BRP069B45 | Siesta (Germany) | ATXF-A | not tested, but should work (with 'useGetToPost') |
 
-(*) is a placeholder for color of device (example: FTXA20AW ... "W" = White)
-(-) is a placeholder for cooling performance, as an approximate value (example: FTXA20AW … "20" = 2,0 kW)
+(*) is a placeholder for color of device (example: FTXA20AW ... "W" = White);
+(-) is a placeholder for cooling performance, as an approximate value (example: FTXA20AW … "20" = 2,0 kW);
 
-*What is meant by "with 'useGetToPost'":*
+What is meant by "with 'useGetToPost'":
 ```
 var options = {'useGetToPost':true};
 
