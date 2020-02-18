@@ -16,6 +16,28 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon
 This library connects to a Daikin Air Conditioner device and allows to control the device and to read values from it.
 The Daikin Device needs to be equipped with a Daikin Wifi controller. Normally all wifi controllers should be supportedthat are supported by the Daikin App.
 
+**Device series from 2019**
+| wireless adapter | device name | device series | test result |
+| --- | --- | --- | --- |
+| BRP069B42 | Urura Sarara | FTXZ-N | not tested, but should work (with 'useGetToPost')  |
+| BRP084A42-1 | Stylish | CTXA-A; FTXA-A; FTXA-B | works with 'useGetToPost' |
+| BRP069B41 | Emura | FTXJ-M | works with 'useGetToPost' |
+| BRP069B41 | Perfera | CTXM-N; FTXM-N | works with 'useGetToPost' |
+| BRP069B45 | Comfora | FTXP-M | works with 'useGetToPost' |
+| BRP069B45 | Sensira (Austria) | FTXF-A | works with 'useGetToPost' |
+| BRP069B45 | Siesta (Germany) | ATXF-A | not tested, but should work (with 'useGetToPost') |
+ * = placeholder for color of device (example: FTXA20AW ... "W" = White)
+ - = placeholder for cooling performance, as an approximate value (example: FTXA20AW … "20" = 2,0 kW)
+
+*What is meant by "with 'useGetToPost'":*
+```
+var options = {'useGetToPost':true};
+
+var daikin = new DaikinAC('192.168.0.100', options, function(err) {
+    ...
+```
+
+**Device series until 2019**
 According to Daikin Support Documents the following devices should be compatible (at least):
 
 Compatible units in combination with BRP069A41:
@@ -39,8 +61,6 @@ ATX20KV1B, ATX25KV1B, ATX35KV1B, , ATXL25J2V1B, ATXL35J2V1B,
 
 Compatible units in combination with BRP069A44 (?):
 FTX50KV1B, FTX60KV1B
-
-**Important: Type "B" Wifi adapters from Daikin (firmware 1.4.x, e.g. BRP069Bxx) also were reported to work but need to use the special option "useGetToPost" in the options!**
 
 The library is based on the great work of the unofficial Daikin API documentation project (https://github.com/ael-code/daikin-control). Additional informations on parameters and values can be found there.
 
