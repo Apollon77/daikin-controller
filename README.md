@@ -100,6 +100,10 @@ function (err, ret, response)
 * **ret**: The return value from the device. Can currently be "OK", "PARAM NG" (Wrong Parameters) or "ADV NG" (Wrong ADV)
 * **response**: Object that contains the returned fields as keys. Mapping from device fieldnames to library field names see lib/DaikinACTypes.js
 
+## Manuals
+
+* [Node-RED (Linux)](docs/node-red/linux.md)
+
 ## Method description
 
 ### DaikinAC(ip, options, callback)
