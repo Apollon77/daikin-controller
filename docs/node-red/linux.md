@@ -32,6 +32,6 @@ Start (or restart) Node-RED.
 
 3. Add the test flow
 
-In Node-RED we add the content of the file "Testflow-Daikin_node-red.txt" via Import Nodes. A new flow is recommended (but can also be added to an existing one).
+In Node-RED we add the content of the file [Testflow-Daikin_node-red.json](Testflow-Daikin_node-red.json) via Import Nodes. A new flow is recommended, but can also be added to an existing one.
 The IP address of the Daikin device belongs to the "Global set: DaikinDeviceIP".
 ![Screenshot_flow](/docs/node-red/screenshot_flow.jpg?raw=true "screenshot of the flow")
