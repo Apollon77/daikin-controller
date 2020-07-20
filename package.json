@@ -18,17 +18,19 @@
     "node-rest-client": "^3.1.0"
   },
   "devDependencies": {
-    "mocha": "^6.0.1",
+    "@alcalzone/release-script": "^1.6.0",
+    "mocha": "^8.0.1",
     "chai": "^4.2.0",
-    "istanbul": "*",
-    "sinon": "^7.2.4",
-    "nock": "^11.3.2"
+    "istanbul": "^0.4.5",
+    "sinon": "^9.0.2",
+    "nock": "^13.0.2"
   },
   "bugs": {
     "url": "https://github.com/Apollon77/daikin-controller/issues"
   },
   "main": "index.js",
   "scripts": {
-    "test": "node node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec"
+    "test": "node node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec",
+    "release": "release-script"
   }
 }
