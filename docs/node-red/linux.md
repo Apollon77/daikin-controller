@@ -7,7 +7,7 @@ After installing Node-RED we add a line in the settings file to make Node-RED in
 cd ~/.node-red
 nano settings.js
 ```
-with `[Strg] + [W]` we search for the following entry `functionGlobalContext: {` ([!probably line 216](https://github.com/node-red/node-red/blob/master/packages/node_modules/node-red/settings.js#L216)) and add `DaikinAC:require("daikin-controller")`
+we search `[Strg] + [W]` for the following entry `functionGlobalContext: {` and add `DaikinAC:require("daikin-controller")`
 should look like the following:
 ```
     ...
@@ -19,7 +19,7 @@ should look like the following:
     },
     ...
 ```
-We save the changes and leave the editor.
+We save the changes `[Strg] + [O]` and leave the editor `[Strg] + [X]`.
 
 2. Installing the daikin-controller
 
