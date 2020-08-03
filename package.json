@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@alcalzone/release-script": "^1.6.0",
-    "mocha": "^8.0.1",
+    "mocha": "^8.1.0",
     "chai": "^4.2.0",
     "istanbul": "^0.4.5",
     "sinon": "^9.0.2",
