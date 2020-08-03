@@ -23,7 +23,7 @@
     "chai": "^4.2.0",
     "istanbul": "^0.4.5",
     "sinon": "^9.0.2",
-    "nock": "^13.0.2"
+    "nock": "^13.0.3"
   },
   "bugs": {
     "url": "https://github.com/Apollon77/daikin-controller/issues"
