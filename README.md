@@ -230,6 +230,9 @@ The following endpoints  (according to ...) are currently not implemented and ca
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* support lpw parameter for new models
+
 ### 1.1.6 (2020-07-20)
 * update dependencies
 * tests only cover node.js 10.x+ (LTS versions), but library should also work below
