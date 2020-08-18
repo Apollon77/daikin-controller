@@ -230,7 +230,7 @@ The following endpoints  (according to ...) are currently not implemented and ca
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 1.2.0 (2020-08-19)
 * support lpw parameter for new models
 
 ### 1.1.6 (2020-07-20)
