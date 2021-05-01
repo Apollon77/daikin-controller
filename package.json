@@ -19,7 +19,7 @@
     "xmlbuilder": "^15.1.1"
   },
   "devDependencies": {
-    "@alcalzone/release-script": "^1.8.3",
+    "@alcalzone/release-script": "^1.10.0",
     "mocha": "^8.3.2",
     "chai": "^4.3.4",
     "istanbul": "^0.4.5",
