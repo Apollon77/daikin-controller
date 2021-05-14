@@ -1,20 +1,12 @@
 # daikin-controller
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/Apollon77/daikin-controller.svg)](https://greenkeeper.io/)
 [![NPM version](http://img.shields.io/npm/v/daikin-controller.svg)](https://www.npmjs.com/package/daikin-controller)
 [![Downloads](https://img.shields.io/npm/dm/daikin-controller.svg)](https://www.npmjs.com/package/daikin-controller)
-[![Code Climate](https://codeclimate.com/github/Apollon77/daikin-controller/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/daikin-controller)
-
-**Tests:**
+![Test and Release](https://github.com/Apollon77/daikin-controller/workflows/Test%20and%20Release/badge.svg)
 [![Test Coverage](https://codeclimate.com/github/Apollon77/daikin-controller/badges/coverage.svg)](https://codeclimate.com/github/Apollon77/daikin-controller/coverage)
-Linux/Mac:
-[![Travis-CI](http://img.shields.io/travis/Apollon77/daikin-controller/master.svg)](https://travis-ci.org/Apollon77/daikin-controller)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/daikin-controller?branch=master&svg=true)](https://ci.appveyor.com/project/Apollon77/daikin-controller/)
-
-[![NPM](https://nodei.co/npm/daikin-controller.png?downloads=true)](https://nodei.co/npm/daikin-controller/)
 
 This library connects to a Daikin Air Conditioner device and allows to control the device and to read values from it.
-The Daikin Device needs to be equipped with a Daikin Wifi controller. Normally all wifi controllers should be supportedthat are supported by the Daikin App.
+The Daikin Device needs to be equipped with a Daikin Wifi controller. Normally all wifi controllers should be supported that are supported by the Daikin App.
 
 **Device series from 2019**
 | wireless adapter | device name | device series | test result |
@@ -229,6 +221,9 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_day_paower_ex
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (yankee42) Improve response parser to allow field values with comma in it
 
 ### 1.2.0 (2020-08-19)
 * support lpw parameter for new models
