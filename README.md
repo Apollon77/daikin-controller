@@ -222,7 +222,7 @@ The following endpoints  (according to ...) are currently not implemented and ca
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 1.2.1 (2021-05-14)
 * (yankee42) Improve response parser to allow field values with comma in it
 
 ### 1.2.0 (2020-08-19)
