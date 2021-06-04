@@ -224,7 +224,7 @@ The following endpoints  (according to ...) are currently not implemented and ca
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 1.2.2 (2021-06-04)
 * (Apollon77) handle stemp and shum if not numbers and send out "as is"
 
 ### 1.2.1 (2021-05-14)
