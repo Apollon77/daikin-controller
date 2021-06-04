@@ -224,6 +224,9 @@ The following endpoints  (according to ...) are currently not implemented and ca
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) handle stemp and shum if not numbers and send out "as is"
+
 ### 1.2.1 (2021-05-14)
 * (yankee42) Improve response parser to allow field values with comma in it
 
