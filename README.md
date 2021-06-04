@@ -56,6 +56,8 @@ Compatible units in combination with BRP069A44 (?):
 FTX50KV1B, FTX60KV1B
 
 The library is based on the great work of the unofficial Daikin API documentation project (https://github.com/ael-code/daikin-control). Additional informations on parameters and values can be found there.
+## Projects using this library
+* https://flows.nodered.org/node/node-red-contrib-daikin-ac
 
 ## Usage example
 
