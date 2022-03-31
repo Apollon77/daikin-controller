@@ -20,19 +20,21 @@
   },
   "devDependencies": {
     "@alcalzone/release-script": "^2.2.1",
+    "@types/jest": "^27.4.1",
     "@types/node": "^17.0.23",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.16.0",
+    "chai": "^4.3.6",
     "eslint": "^8.12.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "chai": "^4.3.6",
     "istanbul": "^0.4.5",
-    "mocha": "^9.2.1",
+    "jest": "^27.5.1",
     "nock": "^13.2.4",
+    "prettier": "^2.6.1",
     "sinon": "^12.0.1",
-    "typescript": "^4.6.3"
+    "ts-jest": "^27.1.4",
     "typescript": "^4.6.3",
   },
   "bugs": {
@@ -41,7 +43,8 @@
   "main": "index.ts",
   "scripts": {
     "lint-fix-all": "eslint ./src/{*.ts,*.js} --fix --no-error-on-unmatched-pattern",
-    "test": "node node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec",
+    "jest-coverage": "jest --coverage",
+    "test": "npm run jest-coverage",
     "build": "tsc",
     "release": "release-script"
   }

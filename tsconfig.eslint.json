@@ -3,6 +3,9 @@
   "extends": "./tsconfig.json",
   "include": [
     "src/**/*.ts",
+    "QuickLocalTest/*.ts",
+    "test/**/*.ts",
+    "test/*.ts",
     ".eslintrc.js",
   ]
 }
