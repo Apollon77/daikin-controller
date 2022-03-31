@@ -36,6 +36,7 @@
     "sinon": "^12.0.1",
     "ts-jest": "^27.1.4",
     "typescript": "^4.6.3",
+    "ts-node": "^10.7.0"
   },
   "bugs": {
     "url": "https://github.com/Apollon77/daikin-controller/issues"
@@ -45,6 +46,7 @@
     "lint-fix-all": "eslint ./src/{*.ts,*.js} --fix --no-error-on-unmatched-pattern",
     "jest-coverage": "jest --coverage",
     "test": "npm run jest-coverage",
+    "quickTestLocalNetwork": "ts-node QuickLocalTest/QuickTestLocalNetwork.ts",
     "build": "tsc",
     "release": "release-script"
   }
