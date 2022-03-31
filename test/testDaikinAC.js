@@ -5,7 +5,7 @@
 var expect = require('chai').expect;
 var nock = require('nock');
 
-var DaikinAC = require('../lib/DaikinAC');
+const {DaikinAC} = require('../lib/index');
 
 var logger = null;
 //logger = console.log;
@@ -31,7 +31,7 @@ describe('Test DaikinAC', function() {
         var req =   nock('http://127.0.0.1')
                     .get('/common/basic_info')
                     .reply(200, 'ret=ADV NG,bla=1');
-        var daikin = new DaikinAC('127.0.0.1', function (err, res) {
+        var daikin = new DaikinAC('127.0.0.1', options, function (err, res) {
             expect(err).to.be.equal('Wrong ADV: ret=ADV NG,bla=1');
             done();
         });
@@ -51,7 +51,7 @@ describe('Test DaikinAC', function() {
                     .reply(200, 'ret=OK,pow=0,mode=3,adv=,stemp=24.0,shum=0,dt1=25.0,dt2=M,dt3=23.0,dt4=27.0,dt5=27.0,dt7=25.0,dh1=AUTO,dh2=50,dh3=0,dh4=0,dh5=0,dh7=AUTO,dhh=50,b_mode=3,b_stemp=23.0,b_shum=0,alert=255,f_rate=A,f_dir=0,b_f_rate=A,b_f_dir=0,dfr1=5,dfr2=5,dfr3=A,dfr4=5,dfr5=5,dfr6=5,dfr7=5,dfrh=5,dfd1=0,dfd2=0,dfd3=0,dfd4=0,dfd5=0,dfd6=0,dfd7=0,dfdh=0')
                     .get('/aircon/get_sensor_info')
                     .reply(200, 'ret=OK,htemp=22.5,hhum=-,otemp=-,err=0,cmpfreq=0');
-        var daikin = new DaikinAC('127.0.0.1', function(err) {
+        var daikin = new DaikinAC('127.0.0.1', options, function(err) {
             expect(err).to.be.null;
             expect(Object.keys(daikin.currentCommonBasicInfo).length).to.be.equal(25);
             expect(Object.keys(daikin.currentACModelInfo).length).to.be.equal(7);
@@ -93,7 +93,7 @@ describe('Test DaikinAC', function() {
                     .reply(200, 'ret=OK,adv=')
                     .get('/aircon/get_control_info')
                     .reply(200, 'ret=OK,pow=0,mode=3,adv=,stemp=24.0,shum=0,dt1=25.0,dt2=M,dt3=23.0,dt4=27.0,dt5=27.0,dt7=25.0,dh1=AUTO,dh2=50,dh3=0,dh4=0,dh5=0,dh7=AUTO,dhh=50,b_mode=3,b_stemp=23.0,b_shum=0,alert=255,f_rate=A,f_dir=0,b_f_rate=A,b_f_dir=0,dfr1=5,dfr2=5,dfr3=A,dfr4=5,dfr5=5,dfr6=5,dfr7=5,dfrh=5,dfd1=0,dfd2=0,dfd3=0,dfd4=0,dfd5=0,dfd6=0,dfd7=0,dfdh=0');
-        var daikin = new DaikinAC('127.0.0.1', function(err) {
+        var daikin = new DaikinAC('127.0.0.1', options, function(err) {
             expect(err).to.be.null;
             var vals = {
                 'power': true,
@@ -122,7 +122,7 @@ describe('Test DaikinAC', function() {
                     .reply(200, 'ret=PARAM NG,adv=')
                     .get('/aircon/get_control_info?lpw=')
                     .reply(200, 'ret=OK,pow=0,mode=3,adv=,stemp=25.0,shum=0,dt1=25.0,dt2=M,dt3=23.0,dt4=27.0,dt5=27.0,dt7=25.0,dh1=AUTO,dh2=50,dh3=0,dh4=0,dh5=0,dh7=AUTO,dhh=50,b_mode=3,b_stemp=23.0,b_shum=0,alert=255,f_rate=A,f_dir=0,b_f_rate=A,b_f_dir=0,dfr1=5,dfr2=5,dfr3=A,dfr4=5,dfr5=5,dfr6=5,dfr7=5,dfrh=5,dfd1=0,dfd2=0,dfd3=0,dfd4=0,dfd5=0,dfd6=0,dfd7=0,dfdh=0');
-        var daikin = new DaikinAC('127.0.0.1', function(err) {
+        var daikin = new DaikinAC('127.0.0.1', options, function(err) {
             expect(err).to.be.null;
             var vals = {
                 'power': true,
@@ -220,18 +220,18 @@ describe('Test DaikinAC', function() {
 
                                         daikin.rebootAdapter(function(err, response) {
                                             expect(err).to.be.null;
-                                            expect(Object.keys(response).length).to.be.equal(0);
+                                            expect(Object.keys(response).length).to.be.equal(1);
                                             expect(daikin.currentCommonBasicInfo.dst).to.be.false;
 
                                             daikin.enableAdapterLED(function(err, response) {
                                                 expect(err).to.be.null;
-                                                expect(Object.keys(response).length).to.be.equal(0);
+                                                expect(Object.keys(response).length).to.be.equal(1);
                                                 expect(daikin.currentCommonBasicInfo.dst).to.be.true;
                                                 expect(daikin.currentCommonBasicInfo.led).to.be.true;
 
                                                 daikin.disableAdapterLED(function(err, response) {
                                                     expect(err).to.be.null;
-                                                    expect(Object.keys(response).length).to.be.equal(0);
+                                                    expect(Object.keys(response).length).to.be.equal(1);
                                                     expect(daikin.currentCommonBasicInfo.led).to.be.false;
 
                                                     setTimeout(function() {

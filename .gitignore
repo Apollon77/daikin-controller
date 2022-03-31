@@ -1,0 +1,5 @@
+/coverage/
+/lib/
+
+# Dependency directories
+node_modules/
