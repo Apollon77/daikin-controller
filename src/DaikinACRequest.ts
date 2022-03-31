@@ -16,7 +16,7 @@ import { SetCommandResponse, SetSpecialModeRequest } from './models';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const RestClient = require('node-rest-client').Client;
 
-export type Logger = (data: string | null) => void;
+export type Logger = null | undefined | ((data: string | null) => void);
 
 export interface DaikinACOptions {
   logger?: Logger;
@@ -76,6 +76,7 @@ export class DaikinACRequest {
     req.on('requestTimeout', (req: XMLHttpRequest) => {
       if (this.logger) this.logger('request has expired');
       req.abort();
+      callback(new Error(`Error while communicating with Daikin device: Timeout`));
     });
 
     req.on('responseTimeout', (_res: any) => {
@@ -147,9 +148,10 @@ export class DaikinACRequest {
     });
   }
 
-  public setACSpecialMode(obj: SetSpecialModeRequest, callback?: DaikinResponseCb<SetCommandResponse>) {
+  public setACSpecialMode(obj: SetSpecialModeRequest, callback: DaikinResponseCb<SetCommandResponse>) {
     this.doPost(`http://${this.ip}/aircon/set_special_mode`, obj.getRequestDict(), (data, _res) => {
-      DaikinDataParser.processResponse(data, callback);
+      const dict = DaikinDataParser.processResponse(data, callback);
+      if (dict !== null) SetCommandResponse.parseResponse(dict, callback);
     });
   }
 
@@ -203,10 +205,15 @@ export class DaikinACRequest {
   }
 
   public setACControlInfo(obj: ControlInfo, callback: DaikinResponseCb<SetCommandResponse>) {
-    this.doPost(`http://${this.ip}/aircon/set_control_info`, obj.getRequestDict(), (data, _response) => {
-      const dict = DaikinDataParser.processResponse(data, callback);
-      if (dict !== null) SetCommandResponse.parseResponse(dict, callback);
-    });
+    try {
+      this.doPost(`http://${this.ip}/aircon/set_control_info`, obj.getRequestDict(), (data, _response) => {
+        const dict = DaikinDataParser.processResponse(data, callback);
+        if (dict !== null) SetCommandResponse.parseResponse(dict, callback);
+      });
+    } catch (e) {
+      const errorMessage = e instanceof Error ? e.message : (e as string);
+      callback(errorMessage, null, null);
+    }
   }
 
   public getACSensorInfo(callback: DaikinResponseCb<SensorInfoResponse>) {

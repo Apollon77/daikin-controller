@@ -30,7 +30,9 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "typeRoots": ["./node_modules/@types", "./types"],
-    "types": ["node"],
+    "types": [
+      "node",
+    ],
     "esModuleInterop": true
   },
   "include": ["src"],

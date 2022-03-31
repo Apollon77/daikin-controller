@@ -10,11 +10,12 @@ module.exports = {
     // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
     'plugin:prettier/recommended',
   ],
-  plugins: ["unused-imports"],
+  plugins: ['unused-imports'],
   rules: {
     'linebreak-style': 'off',
     '@typescript-eslint/no-inferrable-types': [0],
-    '@typescript-eslint/no-unused-vars': ['error',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
       {
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_',
@@ -22,7 +23,7 @@ module.exports = {
       },
     ],
     '@typescript-eslint/adjacent-overload-signatures': [0],
-    "unused-imports/no-unused-imports": "error",
+    'unused-imports/no-unused-imports': 'error',
   },
   overrides: [
     {
@@ -36,6 +37,6 @@ module.exports = {
       parserOptions: {
         project: ['./tsconfig.json'], // Specify it only for TypeScript files
       },
-    }
+    },
   ],
 };

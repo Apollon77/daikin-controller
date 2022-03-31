@@ -52,7 +52,7 @@ export class DaikinDiscovery {
     }
     this.log(`Send UDP discovery package ${attemptsLeft}`);
     this.udpSocket.send(this.probeData, 0, this.probeData.length, this.probePort, this.probeAddress);
-    this.probeTimeout = setTimeout(this.sendProbes, this.probeInterval, --attemptsLeft);
+    this.probeTimeout = setTimeout(this.sendProbes.bind(this), this.probeInterval, --attemptsLeft);
   }
   private finalizeDiscovery() {
     if (this.probeTimeout !== null) {

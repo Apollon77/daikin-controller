@@ -77,7 +77,7 @@ export class DaikinDataParser {
     if (value === undefined) {
       return undefined;
     }
-    if(altValues?.[value] !== undefined) {
+    if (altValues?.[value] !== undefined) {
       return altValues[value];
     }
     return !!(typeof value !== 'number' ? parseInt(value as string, 10) : value);
@@ -112,7 +112,7 @@ export class DaikinDataParser {
     }
 
     if (altValues !== undefined) {
-      if(altValues[value] !== undefined) return altValues[value]
+      if (altValues[value] !== undefined) return altValues[value];
       for (const key in altValues) {
         if (altValues[key] === value) return value;
       }
