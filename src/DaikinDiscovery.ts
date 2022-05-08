@@ -34,7 +34,8 @@ export class DaikinDiscovery {
 
     this.udpSocket.on('message', (message, remote) => {
       this.log(`${remote.address}:${remote.port} - ${message}`);
-      this.discoveredDevices[remote.address] = message.toString();
+      // this.discoveredDevices[remote.address] = message.toString();
+      this.discoveredDevices[remote.address] = remote.address;
       if (Object.keys(this.discoveredDevices).length >= waitForCount) {
         this.finalizeDiscovery();
       }
