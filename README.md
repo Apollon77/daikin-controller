@@ -56,6 +56,9 @@ Compatible units in combination with BRP069A44 (?):
 FTX50KV1B, FTX60KV1B
 
 The library is based on the great work of the unofficial Daikin API documentation project (https://github.com/ael-code/daikin-control). Additional informations on parameters and values can be found there.
+
+Note: For devices with newer WLAN-Adapters like **BRP069C4x** which can only be used by the Daikin Onecta App please use the [Daikin-Controller-Cloud](https://github.com/Apollon77/daikin-controller-cloud) lib instead.
+
 ## Projects using this library
 * https://flows.nodered.org/node/node-red-contrib-daikin-ac
 
@@ -257,3 +260,7 @@ The following endpoints  (according to ...) are currently not implemented and ca
 
 ### v1.0.0 (2017)
 * initial release
+
+## Disclaimer
+**Daikin is a trademark of DAIKIN INDUSTRIES, LTD. I am in no way endorsed by or affiliated with DAIKIN INDUSTRIES, LTD., or any associated subsidiaries, logos or trademarks. This personal project is maintained in spare time.**
+
