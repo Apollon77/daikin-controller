@@ -1,0 +1,11 @@
+{
+  // extend your base config so you don't have to redefine your compilerOptions
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/**/*.ts",
+    "QuickLocalTest/*.ts",
+    "test/**/*.ts",
+    "test/*.ts",
+    ".eslintrc.js",
+  ]
+}

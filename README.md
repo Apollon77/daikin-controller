@@ -86,7 +86,7 @@ The library tries to make it easy to interact with a Daikin device, especially b
 
 On each call the result will be provided to a callback method together with an error flag containing an error message.
 
-The library do not return the same field names as the Device (as listed on the unofficial documentation), but tries to make the fields more human readable in camel case notation together with type conversion where possible. The corresponding mapping can be found in lib/DaikinACTypes.js .
+The library do not return the same field names as the Device (as listed on the unofficial documentation), but tries to make the fields more human readable in camel case notation together with type conversion where possible. The corresponding mapping can be found in lib/DaikinACTypes.ts .
 
 The callback method should have aa signature like
 
@@ -95,7 +95,7 @@ function (err, ret, response)
 ```
 * **err**: null on success or a string value when an error has occured
 * **ret**: The return value from the device. Can currently be "OK", "PARAM NG" (Wrong Parameters) or "ADV NG" (Wrong ADV)
-* **response**: Object that contains the returned fields as keys. Mapping from device fieldnames to library field names see lib/DaikinACTypes.js
+* **response**: Object that contains the returned fields as keys. Mapping from device fieldnames to library field names see lib/DaikinACTypes.ts
 
 ## Manuals
 
@@ -196,7 +196,7 @@ This methods sends UDP Broadcasts into the network to discover Daikin devices.
 Example:
 
 ```
-var Daikin = require('../../index.js');
+var Daikin = require('../../lib/index.js');
 
 Daikin.discover(2, function(result) {
     console.log(JSON.stringify(result));
