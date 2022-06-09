@@ -231,8 +231,7 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_day_paower_ex
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 2.0.0 (2022-06-09)
 * Major update, see notes above
 * (theimo1221) Rewrite to typescript
 
@@ -272,4 +271,3 @@ The following endpoints  (according to ...) are currently not implemented and ca
 
 ## Disclaimer
 **Daikin is a trademark of DAIKIN INDUSTRIES, LTD. I am in no way endorsed by or affiliated with DAIKIN INDUSTRIES, LTD., or any associated subsidiaries, logos or trademarks. This personal project is maintained in spare time.**
-
