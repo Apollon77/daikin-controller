@@ -231,6 +231,10 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_day_paower_ex
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Correctly decode encoded strings again
+
 ### 2.0.1 (2022-06-09)
 * (Apollon77) export DaikinACTypes directly via DaikinAC class again as in 1.x
 

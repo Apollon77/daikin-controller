@@ -60,6 +60,7 @@ describe('Test DaikinAC', function () {
     const daikin = new DaikinAC('127.0.0.1', options, function (err) {
       expect(err).toBeNull();
       expect(Object.keys(daikin.currentCommonBasicInfo!).length).toEqual(25);
+      expect(daikin.currentCommonBasicInfo!.groupName).toEqual('Kinder'); // %4b%69%6e%64%65%72
       expect(Object.keys(daikin.currentACModelInfo!).length).toEqual(7);
 
       let cnt = 0;

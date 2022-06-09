@@ -65,7 +65,7 @@ export class DaikinDataParser {
             }
         }
 
-        return typeof value === 'number' ? value.toString() : value;
+        return typeof value === 'number' ? value.toString() : decodeURIComponent(value);
     }
 
     public static resolveBool(
