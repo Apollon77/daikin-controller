@@ -232,8 +232,7 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_day_paower_ex
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 2.0.3 (2022-06-09)
 * (Apollon77) Add backward compatibility for setACSpecialMode
 * (Apollon77) Adjust exports
 
