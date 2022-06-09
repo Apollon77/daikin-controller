@@ -231,8 +231,7 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_day_paower_ex
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 2.0.2 (2022-06-09)
 * (Apollon77) Correctly decode encoded strings again
 
 ### 2.0.1 (2022-06-09)
