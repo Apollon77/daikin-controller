@@ -13,6 +13,8 @@ import {
 } from './models';
 import { DaikinACOptions, DaikinACRequest, Logger } from './DaikinACRequest';
 
+export * as DaikinACTypes from './DaikinACTypes';
+
 type defaultCallback<T> = (err: Error | null, res: T | null) => void;
 type updateErrorCallback = (err: Error | null) => void;
 
@@ -35,6 +37,7 @@ export class DaikinAC {
     get updateTimeout(): NodeJS.Timeout | null {
         return this._updateTimeout;
     }
+
     private _currentACModelInfo: null | ModelInfoResponse = null;
     private _currentACControlInfo: null | ControlInfo = null;
     private _currentACSensorInfo: null | SensorInfoResponse = null;

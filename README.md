@@ -231,6 +231,10 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_day_paower_ex
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) export DaikinACTypes directly via DaikinAC class again as in 1.x
+
 ### 2.0.0 (2022-06-09)
 * Major update, see notes above
 * (theimo1221) Rewrite to typescript

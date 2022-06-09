@@ -1,6 +1,6 @@
 import { DaikinDataParser, ResponseDict } from '../DaikinDataParser';
 import { DaikinResponseCb } from '../DaikinACRequest';
-import { FanDirection, Power, SpecialModeResponse } from '../DaikinACTypes';
+import { FanDirection, Power, SpecialModeResponse, Mode, FanRate } from '../DaikinACTypes';
 import { RequestDict } from './requests';
 
 const AlternativeHumidityTarget: { [key: string]: 'AUTO' } = {
@@ -8,24 +8,6 @@ const AlternativeHumidityTarget: { [key: string]: 'AUTO' } = {
 };
 const AlternativeTemperatureTargets: { [key: string]: 'M' } = {
     M: 'M',
-};
-const Mode: { [key: string]: number } = {
-    AUTO: 0,
-    AUTO1: 1,
-    AUTO2: 7,
-    DEHUMDID: 2,
-    COLD: 3,
-    HOT: 4,
-    FAN: 6,
-};
-const FanRate: { [key: string]: number | 'A' | 'B' } = {
-    AUTO: 'A',
-    SILENCE: 'B',
-    LEVEL_1: 3,
-    LEVEL_2: 4,
-    LEVEL_3: 5,
-    LEVEL_4: 6,
-    LEVEL_5: 7,
 };
 
 export class ControlInfo {

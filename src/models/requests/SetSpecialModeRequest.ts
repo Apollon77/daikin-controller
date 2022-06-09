@@ -1,14 +1,5 @@
 import { RequestDict } from './index';
-
-export enum SpecialModeState {
-    OFF = 0,
-    ON = 1,
-}
-export enum SpecialModeKind {
-    STREAMER = 0, // Flash STREAMER Air-Purifier
-    POWERFUL = 1, // POWERFUL Operation
-    ECONO = 2, // ECONO Operation
-}
+import { SpecialModeState, SpecialModeKind } from '../../DaikinACTypes';
 
 export class SetSpecialModeRequest {
     private readonly state: number;

@@ -1,17 +1,6 @@
 import { DaikinDataParser, ResponseDict } from '../../DaikinDataParser';
-import { Power } from '../../DaikinACTypes';
+import { Power, Type, Method, AdpMode} from '../../DaikinACTypes';
 import { DaikinResponseCb } from '../../DaikinACRequest';
-
-const AdpMode: { [key: string]: string } = {
-    RUN: 'run',
-};
-const Method: { [key: string]: string } = {
-    POLLING: 'polling',
-};
-const Type: { [key: string]: string } = {
-    AC: 'aircon',
-    // ...
-};
 
 export class BasicInfoResponse {
     public type?: string;
