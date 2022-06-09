@@ -13,7 +13,7 @@ import {
 } from './models';
 import { DaikinACOptions, DaikinACRequest, Logger } from './DaikinACRequest';
 
-export * as DaikinACTypes from './DaikinACTypes';
+export * from './DaikinACTypes';
 
 type defaultCallback<T> = (err: Error | null, res: T | null) => void;
 type updateErrorCallback = (err: Error | null) => void;

@@ -49,7 +49,7 @@
     "quickTestLocalNetwork": "ts-node QuickLocalTest/QuickTestLocalNetwork.ts",
     "build": "tsc",
     "release": "release-script",
-    "prettier": "prettier -u -w src QuickLocalTest",
+    "prettier": "prettier -u -w src QuickLocalTest test",
     "prepare": "npm run build"
   }
 }

@@ -6,6 +6,9 @@ export class SetSpecialModeRequest {
     private readonly kind: number;
 
     public constructor(state: SpecialModeState, kind: SpecialModeKind) {
+        if (typeof state !== 'number' || typeof kind !== 'number') {
+            throw new Error('Invalid arguments');
+        }
         this.state = state;
         this.kind = kind;
     }

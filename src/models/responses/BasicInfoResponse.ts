@@ -1,5 +1,5 @@
 import { DaikinDataParser, ResponseDict } from '../../DaikinDataParser';
-import { Power, Type, Method, AdpMode} from '../../DaikinACTypes';
+import { Power, Type, Method, AdpMode } from '../../DaikinACTypes';
 import { DaikinResponseCb } from '../../DaikinACRequest';
 
 export class BasicInfoResponse {

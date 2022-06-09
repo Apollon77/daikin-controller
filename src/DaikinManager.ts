@@ -49,7 +49,9 @@ export class DaikinManager {
                     if (err !== null) {
                         console.log(`Initial connection to "${key}" at address "${ip}" failed: ${err}`);
                     } else {
-                        console.log(`Initial connection to "${key}" at address "${ip}" succeeded: ${JSON.stringify(res)}`);
+                        console.log(
+                            `Initial connection to "${key}" at address "${ip}" succeeded: ${JSON.stringify(res)}`,
+                        );
                     }
                 }
             });

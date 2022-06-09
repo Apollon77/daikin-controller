@@ -65,6 +65,7 @@ Note: For devices with newer WLAN-Adapters like **BRP069C4x** which can only be 
 ## Note about v2.0 of this library
 The 2.x of the library is a port to Typescript. We tried to not break anything, but reality will proof how good we were on that :-) Some small changes are in that "might" be breaking depending on the usage:
 * Error parameter in callbacks is now an Error object and no string anymore
+* The Type exports that were available from DaikinAC directly are now exposed one level higher on the main export
 * ...
 
 ## Usage example
@@ -231,6 +232,11 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_day_paower_ex
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Add backward compatibility for setACSpecialMode
+* (Apollon77) Adjust exports
+
 ### 2.0.2 (2022-06-09)
 * (Apollon77) Correctly decode encoded strings again
 

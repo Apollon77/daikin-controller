@@ -12,11 +12,17 @@ import {
     YearPowerResponse,
 } from './models';
 import { SetCommandResponse, SetSpecialModeRequest } from './models';
+import { SpecialModeKind } from './DaikinACTypes';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const RestClient = require('node-rest-client').Client;
 
 export type Logger = null | undefined | ((data: string | null) => void);
+
+export interface SetSpecialModeRequestObject {
+    state: 0 | 1 | '0' | '1';
+    kind: SpecialModeKind;
+}
 
 export interface DaikinACOptions {
     logger?: Logger;
@@ -74,13 +80,13 @@ export class DaikinACRequest {
         const req = this.restClient.get(url, data, callback);
 
         req.on('requestTimeout', (req: XMLHttpRequest) => {
-            if (this.logger) this.logger('request has expired');
+            if (this.logger) this.logger('request timeout');
             req.abort();
             callback(new Error(`Error while communicating with Daikin device: Timeout`));
         });
 
         req.on('responseTimeout', (_res: any) => {
-            if (this.logger) this.logger('response has expired');
+            if (this.logger) this.logger('response timeout');
         });
 
         req.on('error', (err: any) => {
@@ -127,12 +133,12 @@ export class DaikinACRequest {
         const req = this.restClient.post(url, data, callback);
 
         req.on('requestTimeout', (req: XMLHttpRequest) => {
-            if (this.logger) this.logger('request has expired');
+            if (this.logger) this.logger('request timeout');
             req.abort();
         });
 
         req.on('responseTimeout', (_res: unknown) => {
-            if (this.logger) this.logger('response has expired');
+            if (this.logger) this.logger('response timeout');
         });
 
         req.on('error', (err: any) => {
@@ -148,7 +154,15 @@ export class DaikinACRequest {
         });
     }
 
-    public setACSpecialMode(obj: SetSpecialModeRequest, callback: DaikinResponseCb<SetCommandResponse>) {
+    public setACSpecialMode(
+        obj: SetSpecialModeRequest | SetSpecialModeRequestObject,
+        callback: DaikinResponseCb<SetCommandResponse>,
+    ) {
+        if (!(obj instanceof SetSpecialModeRequest)) {
+            const state = typeof obj.state === 'string' ? parseInt(obj.state, 10) : obj.state;
+            obj = new SetSpecialModeRequest(state, obj.kind);
+        }
+
         this.doPost(`http://${this.ip}/aircon/set_special_mode`, obj.getRequestDict(), (data, _res) => {
             const dict = DaikinDataParser.processResponse(data, callback);
             if (dict !== null) SetCommandResponse.parseResponse(dict, callback);
