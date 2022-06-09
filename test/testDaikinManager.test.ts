@@ -5,7 +5,7 @@ describe('Daikin AC Manager', () => {
     new DaikinManager({
       addDevicesByDiscovery: true,
       deviceDiscoveryWaitCount: 2,
-      logIntialDeviceConnection: true,
+      logInitialDeviceConnection: true,
       useGetToPost: false,
       initializeCB: (message) => {
         const success: boolean =
@@ -18,7 +18,7 @@ describe('Daikin AC Manager', () => {
   it('Looks for a device but fails to find it', (done) => {
     new DaikinManager({
       deviceList: { testDevice: '1.2.3.4' },
-      logIntialDeviceConnection: true,
+      logInitialDeviceConnection: true,
       useGetToPost: false,
       initializeCB: (message) => {
         expect(message).toEqual('Finished Initialization with 0 connected and 1 failed Devices.');

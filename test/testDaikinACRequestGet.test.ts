@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import nock from 'nock';
+import nock = require('nock');;
 import { ControlInfo, DaikinACRequest, SetSpecialModeRequest, SpecialModeKind, SpecialModeState } from '../src';
 
 describe('Test DaikinACTypes', () => {
@@ -85,7 +85,8 @@ describe('Test DaikinACTypes', () => {
       //console.log(JSON.stringify(daikinResponse));
       expect(daikinResponse).toBeNull();
       expect(ret).toBeNull();
-      expect(err).toEqual('Required Field targetTemperature do not exists');
+      expect(err).toBeInstanceOf(Error);
+      expect(err?.message?.toString()).toEqual('Required Field targetTemperature do not exists');
       done();
     });
   });
@@ -106,7 +107,8 @@ describe('Test DaikinACTypes', () => {
       expect(req.isDone()).toBeTruthy();
       expect(daikinResponse).toBeNull();
       expect(ret).toEqual('PARAM NG');
-      expect(err).toEqual('Wrong Parameters in request: ret=PARAM NG,adv=');
+      expect(err).toBeInstanceOf(Error);
+      expect(err?.message?.toString()).toEqual('Wrong Parameters in request: ret=PARAM NG,adv=');
       done();
     });
   });
@@ -140,7 +142,8 @@ describe('Test DaikinACTypes', () => {
       expect(req.isDone()).toBeTruthy();
       expect(daikinResponse).toBeNull();
       expect(ret).toEqual('ADV NG');
-      expect(err).toEqual('Wrong ADV: ret=ADV NG,adv=');
+      expect(err).toBeInstanceOf(Error);
+      expect(err?.message?.toString()).toEqual('Wrong ADV: ret=ADV NG,adv=');
       done();
     });
   });

@@ -19,7 +19,7 @@
     "xmlbuilder": "^15.1.1"
   },
   "devDependencies": {
-    "@alcalzone/release-script": "^2.2.1",
+    "@alcalzone/release-script": "^3.5.9",
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.23",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
@@ -41,13 +41,15 @@
   "bugs": {
     "url": "https://github.com/Apollon77/daikin-controller/issues"
   },
-  "main": "index.ts",
+  "main": "lib/index.js",
   "scripts": {
     "lint-fix-all": "eslint ./src/{*.ts,*.js} --fix --no-error-on-unmatched-pattern",
     "jest-coverage": "jest --coverage",
     "test": "npm run jest-coverage",
     "quickTestLocalNetwork": "ts-node QuickLocalTest/QuickTestLocalNetwork.ts",
     "build": "tsc",
-    "release": "release-script"
+    "release": "release-script",
+    "prettier": "prettier -u -w src QuickLocalTest",
+    "prepare": "npm run build"
   }
 }

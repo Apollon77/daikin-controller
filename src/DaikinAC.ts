@@ -1,266 +1,267 @@
 import {
-  BasicInfoResponse,
-  ControlInfo,
-  ModelInfoResponse,
-  RemoteMethodResponse,
-  SensorInfoResponse,
-  SetCommandResponse,
-  SetSpecialModeRequest,
-  WeekPowerExtendedResponse,
-  WeekPowerResponse,
-  YearPowerExtendedResponse,
-  YearPowerResponse,
+    BasicInfoResponse,
+    ControlInfo,
+    ModelInfoResponse,
+    RemoteMethodResponse,
+    SensorInfoResponse,
+    SetCommandResponse,
+    SetSpecialModeRequest,
+    WeekPowerExtendedResponse,
+    WeekPowerResponse,
+    YearPowerExtendedResponse,
+    YearPowerResponse,
 } from './models';
 import { DaikinACOptions, DaikinACRequest, Logger } from './DaikinACRequest';
 
-type defaultCallback<T> = (err: string | null, res: T | null) => void;
+type defaultCallback<T> = (err: Error | null, res: T | null) => void;
+type updateErrorCallback = (err: Error | null) => void;
 
 export class DaikinAC {
-  get currentACModelInfo(): ModelInfoResponse | null {
-    return this._currentACModelInfo;
-  }
-  get currentACControlInfo(): ControlInfo | null {
-    return this._currentACControlInfo;
-  }
-  get currentACSensorInfo(): SensorInfoResponse | null {
-    return this._currentACSensorInfo;
-  }
-  get updateInterval(): number | null {
-    return this._updateInterval;
-  }
-  get currentCommonBasicInfo(): BasicInfoResponse | null {
-    return this._currentCommonBasicInfo;
-  }
-  get updateTimeout(): NodeJS.Timeout | null {
-    return this._updateTimeout;
-  }
-  private _currentACModelInfo: null | ModelInfoResponse = null;
-  private _currentACControlInfo: null | ControlInfo = null;
-  private _currentACSensorInfo: null | SensorInfoResponse = null;
-
-  private _logger: null | Logger;
-  private _daikinRequest: DaikinACRequest;
-  private _updateInterval: null | number = null;
-  private _updateCallback: null | Logger = null;
-  private _currentCommonBasicInfo: null | BasicInfoResponse = null;
-  private _updateTimeout: NodeJS.Timeout | null = null;
-  public constructor(ip: string, options: DaikinACOptions, callback: defaultCallback<ModelInfoResponse>) {
-    this._logger = null;
-    if (options.logger) {
-      this._logger = options.logger;
+    get currentACModelInfo(): ModelInfoResponse | null {
+        return this._currentACModelInfo;
     }
-    this._daikinRequest = new DaikinACRequest(ip, options);
-    this.getCommonBasicInfo((err, _info) => {
-      if (err) {
-        if (callback) callback(err, null);
-        return;
-      }
-      this.getACModelInfo(callback);
-    });
-  }
-  public setUpdate(updateInterval: number, callback: Logger) {
-    this._updateInterval = updateInterval;
-    if (typeof callback === 'function') {
-      this._updateCallback = callback;
+    get currentACControlInfo(): ControlInfo | null {
+        return this._currentACControlInfo;
     }
-    this.updateData();
-  }
+    get currentACSensorInfo(): SensorInfoResponse | null {
+        return this._currentACSensorInfo;
+    }
+    get updateInterval(): number | null {
+        return this._updateInterval;
+    }
+    get currentCommonBasicInfo(): BasicInfoResponse | null {
+        return this._currentCommonBasicInfo;
+    }
+    get updateTimeout(): NodeJS.Timeout | null {
+        return this._updateTimeout;
+    }
+    private _currentACModelInfo: null | ModelInfoResponse = null;
+    private _currentACControlInfo: null | ControlInfo = null;
+    private _currentACSensorInfo: null | SensorInfoResponse = null;
 
-  public initUpdateTimeout() {
-    if (this._updateInterval && !this._updateTimeout) {
-      if (this._logger) this._logger('start update timeout');
-      this._updateTimeout = setTimeout(() => {
+    private _logger: null | Logger;
+    private _daikinRequest: DaikinACRequest;
+    private _updateInterval: null | number = null;
+    private _updateCallback: null | updateErrorCallback = null;
+    private _currentCommonBasicInfo: null | BasicInfoResponse = null;
+    private _updateTimeout: NodeJS.Timeout | null = null;
+    public constructor(ip: string, options: DaikinACOptions, callback: defaultCallback<ModelInfoResponse>) {
+        this._logger = null;
+        if (options.logger) {
+            this._logger = options.logger;
+        }
+        this._daikinRequest = new DaikinACRequest(ip, options);
+        this.getCommonBasicInfo((err, _info) => {
+            if (err) {
+                if (callback) callback(err, null);
+                return;
+            }
+            this.getACModelInfo(callback);
+        });
+    }
+    public setUpdate(updateInterval: number, callback: updateErrorCallback) {
+        this._updateInterval = updateInterval;
+        if (typeof callback === 'function') {
+            this._updateCallback = callback;
+        }
         this.updateData();
-      }, this._updateInterval);
     }
-  }
 
-  public clearUpdateTimeout() {
-    if (this._updateTimeout) {
-      clearTimeout(this._updateTimeout);
-      this._updateTimeout = null;
-      if (this._logger) this._logger('clear update timeout');
+    public initUpdateTimeout() {
+        if (this._updateInterval && !this._updateTimeout) {
+            if (this._logger) this._logger('start update timeout');
+            this._updateTimeout = setTimeout(() => {
+                this.updateData();
+            }, this._updateInterval);
+        }
     }
-  }
 
-  public updateData() {
-    this.clearUpdateTimeout();
-    this.getACControlInfo((err, _info) => {
-      if (err) {
-        this.initUpdateTimeout();
-        if (this._updateCallback) this._updateCallback(err);
-        return;
-      }
-      this.getACSensorInfo((err, _info) => {
-        this.initUpdateTimeout();
-        if (this._updateCallback) this._updateCallback(err);
-      });
-    });
-  }
+    public clearUpdateTimeout() {
+        if (this._updateTimeout) {
+            clearTimeout(this._updateTimeout);
+            this._updateTimeout = null;
+            if (this._logger) this._logger('clear update timeout');
+        }
+    }
 
-  public stopUpdate() {
-    this.clearUpdateTimeout();
-    this._updateInterval = null;
-    this._updateCallback = null;
-  }
-
-  public getCommonBasicInfo(callback: defaultCallback<BasicInfoResponse>) {
-    this._daikinRequest.getCommonBasicInfo((err, _ret, daikinResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinResponse));
-      this._currentCommonBasicInfo = daikinResponse;
-
-      if (this._currentCommonBasicInfo && this._currentCommonBasicInfo.lpwFlag === 1) {
-        this._daikinRequest && this._daikinRequest.addDefaultParameter('lpw', '');
-      }
-
-      if (callback) callback(err, daikinResponse);
-    });
-  }
-
-  public getCommonRemoteMethod(callback: defaultCallback<RemoteMethodResponse>) {
-    this._daikinRequest.getCommonRemoteMethod((err, _ret, daikinResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinResponse));
-      if (callback) callback(err, daikinResponse);
-    });
-  }
-
-  public getACControlInfo(callback: defaultCallback<ControlInfo>) {
-    this._daikinRequest.getACControlInfo((err, _ret, daikinResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinResponse));
-      if (!err) this._currentACControlInfo = daikinResponse;
-
-      if (callback) callback(err, daikinResponse);
-    });
-  }
-
-  /**
-   * Changes the passed options, the rest remains unchanged
-   */
-  public setACControlInfo(obj: ControlInfo, callback: defaultCallback<ControlInfo>) {
-    this.clearUpdateTimeout();
-    this._daikinRequest.getACControlInfo((err, _ret, completeValues) => {
-      if (err || completeValues === null) {
-        this.initUpdateTimeout();
-        if (callback) callback(err, completeValues);
-        return;
-      }
-      // we read the current data and change that set in values
-      completeValues.overwrite(obj);
-      this._daikinRequest.setACControlInfo(completeValues, (errSet, _ret, daikinSetResponse) => {
-        if (this._logger) this._logger(JSON.stringify(daikinSetResponse));
-        this.getACControlInfo((errGet, daikinGetResponse) => {
-          this.initUpdateTimeout();
-          const errFinal = errSet ? errSet : errGet;
-          if (callback) callback(errFinal, daikinGetResponse);
+    public updateData() {
+        this.clearUpdateTimeout();
+        this.getACControlInfo((err, _info) => {
+            if (err) {
+                this.initUpdateTimeout();
+                if (this._updateCallback) this._updateCallback(err);
+                return;
+            }
+            this.getACSensorInfo((err, _info) => {
+                this.initUpdateTimeout();
+                if (this._updateCallback) this._updateCallback(err);
+            });
         });
-      });
-    });
-  }
+    }
 
-  public getACSensorInfo(callback: defaultCallback<SensorInfoResponse>) {
-    this._daikinRequest.getACSensorInfo((err, _ret, daikinResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinResponse));
-      this._currentACSensorInfo = daikinResponse;
+    public stopUpdate() {
+        this.clearUpdateTimeout();
+        this._updateInterval = null;
+        this._updateCallback = null;
+    }
 
-      if (callback) callback(err, daikinResponse);
-    });
-  }
+    public getCommonBasicInfo(callback: defaultCallback<BasicInfoResponse>) {
+        this._daikinRequest.getCommonBasicInfo((err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            this._currentCommonBasicInfo = daikinResponse;
 
-  public getACModelInfo(callback: defaultCallback<ModelInfoResponse>) {
-    this._daikinRequest.getACModelInfo((err, _ret, daikinResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinResponse));
-      this._currentACModelInfo = daikinResponse;
-      if (callback) callback(err, daikinResponse);
-    });
-  }
+            if (this._currentCommonBasicInfo && this._currentCommonBasicInfo.lpwFlag === 1) {
+                this._daikinRequest && this._daikinRequest.addDefaultParameter('lpw', '');
+            }
 
-  public getACWeekPower(callback: defaultCallback<WeekPowerResponse>) {
-    this._daikinRequest.getACWeekPower((err, _ret, daikinResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinResponse));
-      if (callback) callback(err, daikinResponse);
-    });
-  }
-
-  public getACYearPower(callback: defaultCallback<YearPowerResponse>) {
-    this._daikinRequest.getACYearPower((err, _ret, daikinResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinResponse));
-      if (callback) callback(err, daikinResponse);
-    });
-  }
-
-  public getACWeekPowerExtended(callback: defaultCallback<WeekPowerExtendedResponse>) {
-    this._daikinRequest.getACWeekPowerExtended((err, _ret, daikinResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinResponse));
-      if (callback) callback(err, daikinResponse);
-    });
-  }
-
-  public getACYearPowerExtended(callback: defaultCallback<YearPowerExtendedResponse>) {
-    this._daikinRequest.getACYearPowerExtended((err, _ret, daikinResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinResponse));
-      if (callback) callback(err, daikinResponse);
-    });
-  }
-
-  public enableAdapterLED(callback: defaultCallback<SetCommandResponse>) {
-    this.clearUpdateTimeout();
-    this._daikinRequest.setCommonLED(true, (err, _ret, daikinResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinResponse));
-      if (err) {
-        this.initUpdateTimeout();
-        if (callback) callback(err, daikinResponse);
-        return;
-      }
-      this.getCommonBasicInfo((errGet, _daikinGetResponse) => {
-        this.initUpdateTimeout();
-        const errFinal = err ? err : errGet;
-        if (callback) callback(errFinal, daikinResponse);
-      });
-    });
-  }
-
-  public disableAdapterLED(callback: defaultCallback<SetCommandResponse>) {
-    this.clearUpdateTimeout();
-    this._daikinRequest.setCommonLED(false, (err, _ret, daikinResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinResponse));
-      if (err) {
-        this.initUpdateTimeout();
-        if (callback) callback(err, daikinResponse);
-        return;
-      }
-      this.getCommonBasicInfo((errGet, _daikinGetResponse) => {
-        this.initUpdateTimeout();
-        const errFinal = err ? err : errGet;
-        if (callback) callback(errFinal, daikinResponse);
-      });
-    });
-  }
-
-  public rebootAdapter(callback: defaultCallback<SetCommandResponse>) {
-    this.clearUpdateTimeout();
-    this._daikinRequest.rebootAdapter((err, _ret, daikinResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinResponse));
-      if (err) {
-        this.initUpdateTimeout();
-        if (callback) callback(err, daikinResponse);
-        return;
-      }
-      setTimeout(() => {
-        this.getCommonBasicInfo((errGet, _daikinGetResponse) => {
-          this.initUpdateTimeout();
-          const errFinal = err ? err : errGet;
-          if (callback) callback(errFinal, daikinResponse);
+            if (callback) callback(err, daikinResponse);
         });
-      }, 2000);
-    });
-  }
+    }
 
-  public setACSpecialMode(obj: SetSpecialModeRequest, callback: defaultCallback<SetCommandResponse>) {
-    this.clearUpdateTimeout();
+    public getCommonRemoteMethod(callback: defaultCallback<RemoteMethodResponse>) {
+        this._daikinRequest.getCommonRemoteMethod((err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            if (callback) callback(err, daikinResponse);
+        });
+    }
 
-    this._daikinRequest.setACSpecialMode(obj, (errSet, _ret, daikinSetResponse) => {
-      if (this._logger) this._logger(JSON.stringify(daikinSetResponse));
-      if (callback) callback(errSet, daikinSetResponse);
-    });
-  }
+    public getACControlInfo(callback: defaultCallback<ControlInfo>) {
+        this._daikinRequest.getACControlInfo((err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            if (!err) this._currentACControlInfo = daikinResponse;
+
+            if (callback) callback(err, daikinResponse);
+        });
+    }
+
+    /**
+     * Changes the passed options, the rest remains unchanged
+     */
+    public setACControlInfo(obj: ControlInfo, callback: defaultCallback<ControlInfo>) {
+        this.clearUpdateTimeout();
+        this._daikinRequest.getACControlInfo((err, _ret, completeValues) => {
+            if (err || completeValues === null) {
+                this.initUpdateTimeout();
+                if (callback) callback(err, completeValues);
+                return;
+            }
+            // we read the current data and change that set in values
+            completeValues.overwrite(obj);
+            this._daikinRequest.setACControlInfo(completeValues, (errSet, _ret, daikinSetResponse) => {
+                if (this._logger) this._logger(JSON.stringify(daikinSetResponse));
+                this.getACControlInfo((errGet, daikinGetResponse) => {
+                    this.initUpdateTimeout();
+                    const errFinal = errSet ? errSet : errGet;
+                    if (callback) callback(errFinal, daikinGetResponse);
+                });
+            });
+        });
+    }
+
+    public getACSensorInfo(callback: defaultCallback<SensorInfoResponse>) {
+        this._daikinRequest.getACSensorInfo((err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            this._currentACSensorInfo = daikinResponse;
+
+            if (callback) callback(err, daikinResponse);
+        });
+    }
+
+    public getACModelInfo(callback: defaultCallback<ModelInfoResponse>) {
+        this._daikinRequest.getACModelInfo((err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            this._currentACModelInfo = daikinResponse;
+            if (callback) callback(err, daikinResponse);
+        });
+    }
+
+    public getACWeekPower(callback: defaultCallback<WeekPowerResponse>) {
+        this._daikinRequest.getACWeekPower((err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            if (callback) callback(err, daikinResponse);
+        });
+    }
+
+    public getACYearPower(callback: defaultCallback<YearPowerResponse>) {
+        this._daikinRequest.getACYearPower((err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            if (callback) callback(err, daikinResponse);
+        });
+    }
+
+    public getACWeekPowerExtended(callback: defaultCallback<WeekPowerExtendedResponse>) {
+        this._daikinRequest.getACWeekPowerExtended((err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            if (callback) callback(err, daikinResponse);
+        });
+    }
+
+    public getACYearPowerExtended(callback: defaultCallback<YearPowerExtendedResponse>) {
+        this._daikinRequest.getACYearPowerExtended((err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            if (callback) callback(err, daikinResponse);
+        });
+    }
+
+    public enableAdapterLED(callback: defaultCallback<SetCommandResponse>) {
+        this.clearUpdateTimeout();
+        this._daikinRequest.setCommonLED(true, (err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            if (err) {
+                this.initUpdateTimeout();
+                if (callback) callback(err, daikinResponse);
+                return;
+            }
+            this.getCommonBasicInfo((errGet, _daikinGetResponse) => {
+                this.initUpdateTimeout();
+                const errFinal = err ? err : errGet;
+                if (callback) callback(errFinal, daikinResponse);
+            });
+        });
+    }
+
+    public disableAdapterLED(callback: defaultCallback<SetCommandResponse>) {
+        this.clearUpdateTimeout();
+        this._daikinRequest.setCommonLED(false, (err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            if (err) {
+                this.initUpdateTimeout();
+                if (callback) callback(err, daikinResponse);
+                return;
+            }
+            this.getCommonBasicInfo((errGet, _daikinGetResponse) => {
+                this.initUpdateTimeout();
+                const errFinal = err ? err : errGet;
+                if (callback) callback(errFinal, daikinResponse);
+            });
+        });
+    }
+
+    public rebootAdapter(callback: defaultCallback<SetCommandResponse>) {
+        this.clearUpdateTimeout();
+        this._daikinRequest.rebootAdapter((err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            if (err) {
+                this.initUpdateTimeout();
+                if (callback) callback(err, daikinResponse);
+                return;
+            }
+            setTimeout(() => {
+                this.getCommonBasicInfo((errGet, _daikinGetResponse) => {
+                    this.initUpdateTimeout();
+                    const errFinal = err ? err : errGet;
+                    if (callback) callback(errFinal, daikinResponse);
+                });
+            }, 2000);
+        });
+    }
+
+    public setACSpecialMode(obj: SetSpecialModeRequest, callback: defaultCallback<SetCommandResponse>) {
+        this.clearUpdateTimeout();
+
+        this._daikinRequest.setACSpecialMode(obj, (errSet, _ret, daikinSetResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinSetResponse));
+            if (callback) callback(errSet, daikinSetResponse);
+        });
+    }
 }

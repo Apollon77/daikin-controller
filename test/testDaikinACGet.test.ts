@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
 import { ControlInfo, DaikinAC } from '../src';
-import nock from 'nock';
+import nock = require('nock');;
 
 const debug = false;
 const logger = debug ? console.log : null;
@@ -28,7 +28,8 @@ describe('Test DaikinAC', function () {
   it('constructor without update but error', function (done) {
     nock('http://127.0.0.1').get('/common/basic_info').reply(200, 'ret=ADV NG,bla=1');
     new DaikinAC('127.0.0.1', options, function (err, _res) {
-      expect(err).toEqual('Wrong ADV: ret=ADV NG,bla=1');
+      expect(err).toBeInstanceOf(Error);
+      expect(err?.message?.toString()).toEqual('Wrong ADV: ret=ADV NG,bla=1');
       done();
     });
   });
@@ -157,7 +158,8 @@ describe('Test DaikinAC', function () {
         targetHumidity: 0,
       };
       daikin.setACControlInfo(vals as ControlInfo, function (err, response) {
-        expect(err).toEqual('Wrong Parameters in request: ret=PARAM NG,adv=');
+        expect(err).toBeInstanceOf(Error);
+        expect(err?.message?.toString()).toEqual('Wrong Parameters in request: ret=PARAM NG,adv=');
         expect(Object.keys(response!).length).toEqual(42);
         expect(daikin.currentACControlInfo!.targetTemperature).toEqual(25);
         expect(daikin.currentACControlInfo!.mode).toEqual(3);

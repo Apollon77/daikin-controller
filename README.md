@@ -62,6 +62,11 @@ Note: For devices with newer WLAN-Adapters like **BRP069C4x** which can only be 
 ## Projects using this library
 * https://flows.nodered.org/node/node-red-contrib-daikin-ac
 
+## Note about v2.0 of this library
+The 2.x of the library is a port to Typescript. We tried to not break anything, but reality will proof how good we were on that :-) Some small changes are in that "might" be breaking depending on the usage:
+* Error parameter in callbacks is now an Error object and no string anymore
+* ...
+
 ## Usage example
 
 ```
@@ -81,19 +86,19 @@ var daikin = new DaikinAC('192.168.0.100', options, function(err) {
 
 });
 ```
-## Usage informations
-The library tries to make it easy to interact with a Daikin device, especially by caching the last read values as seen in the example above. These values can also be queried manually, but the library makes sure that the cached data are always current - this means that after changing some of the settings the relevant data are updated too.
+## Usage information
+The library tries to make it easy to interact with a Daikin device, especially by caching the last read values as seen in the example above. These values can also be queried manually, but the library makes sure that the cached data are always current - this means that after changing some settings the relevant data are updated too.
 
 On each call the result will be provided to a callback method together with an error flag containing an error message.
 
-The library do not return the same field names as the Device (as listed on the unofficial documentation), but tries to make the fields more human readable in camel case notation together with type conversion where possible. The corresponding mapping can be found in lib/DaikinACTypes.ts .
+The library do not return the same field names as the Device (as listed on the unofficial documentation), but tries to make the fields more human-readable in camel case notation together with type conversion where possible. The corresponding mapping can be found in lib/DaikinACTypes.ts .
 
 The callback method should have aa signature like
 
 ```
 function (err, ret, response)
 ```
-* **err**: null on success or a string value when an error has occured
+* **err**: null on success or an Error object when an error has occured
 * **ret**: The return value from the device. Can currently be "OK", "PARAM NG" (Wrong Parameters) or "ADV NG" (Wrong ADV)
 * **response**: Object that contains the returned fields as keys. Mapping from device fieldnames to library field names see lib/DaikinACTypes.ts
 
@@ -105,7 +110,7 @@ function (err, ret, response)
 
 ### DaikinAC(ip, options, callback)
 Constructor to initialize the Daikin instance to interact with the device.
-Usage see example above, the "options" paraeter is optional. Using "options" you can set a **logger** function (see example). Additionally you can set the special flag **useGetToPost** for older Firmwares of the Daikin-WLAN-Interfaces (<1.4) that only supported HTTP GET also to set data. So if you get errors using it then you try if it works better with this flag.
+Usage see example above, the "options" parameter is optional. Using "options" you can set a **logger** function (see example). Additionally you can set the special flag **useGetToPost** for older Firmwares of the Daikin-WLAN-Interfaces (<1.4) that only supported HTTP GET also to set data. So if you get errors using it then you try if it works better with this flag.
 The callback function is called after initializing the device and requesting currentCommonBasicInfo and currentACModelInfo.
 
 ### setUpdate(updateInterval, callback)
@@ -130,14 +135,14 @@ Get the "Control-Info" details from the Daikin-Device. The callback will be call
 
 ### setACControlInfo(values, callback)
 Send an update for the "Control-Info" data to the device. values is an object with the following possible keys:
-* power: Boolean, enable or disable the device, you can also use DaikinAC-Power for allowed values in human readable format
-* mode: Integer, set operation Mode of the device, you can also use DaikinAC-Mode for allowed values in human readable format
+* power: Boolean, enable or disable the device, you can also use DaikinAC-Power for allowed values in human-readable format
+* mode: Integer, set operation Mode of the device, you can also use DaikinAC-Mode for allowed values in human-readable format
 * targetTemperature: Float or "M" for mode 2 (DEHUMDIFICATOR)
 * targetHumidity: Float or "AUTO"/"--" for mode 6 (FAN)
-* fanRate: Integer or "A"/"B", you can also use DaikinAC-FanRate for allowed values in human readable format
-* fanDirection: Integer, you can also use DaikinAC-FanDirection for allowed values in human readable format
+* fanRate: Integer or "A"/"B", you can also use DaikinAC-FanRate for allowed values in human-readable format
+* fanDirection: Integer, you can also use DaikinAC-FanDirection for allowed values in human-readable format
 
-You can also set single of those keys (e.g. only "Power=true"). When this happends the current data are requested from the device, the relevant values will be changed and all required fields will be re-send to the device. Be carefull, especially on mode changes some values may be needed to be correct (e.g. when changing back from "FAN" to "AUTO" then temperature is empty too, but Auto needs a set temperature).
+You can also set single of those keys (e.g. only "Power=true"). When this happens the current data are requested from the device, the relevant values will be changed and all required fields will be re-sent to the device. Be careful, especially on mode changes some values may be needed to be correct (e.g. when changing back from "FAN" to "AUTO" then temperature is empty too, but Auto needs a set temperature).
 
 ### getACSensorInfo(callback)
 Get the "Sensor-Info" details from the Daikin-Device. The callback will be called with the result.
@@ -226,6 +231,10 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_day_paower_ex
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* Major update, see notes above
+* (theimo1221) Rewrite to typescript
 
 ### 1.2.2 (2021-06-04)
 * (Apollon77) handle stemp and shum if not numbers and send out "as is"
