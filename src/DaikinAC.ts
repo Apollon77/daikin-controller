@@ -68,6 +68,9 @@ export class DaikinAC {
             this.getACModelInfo(callback);
         });
     }
+    public setRequestLogger(value: Logger | null) {
+        this._daikinRequest.logger = value;
+    }
     public setUpdate(updateInterval: number, callback: updateErrorCallback) {
         this._updateInterval = updateInterval;
         if (typeof callback === 'function') {
