@@ -101,7 +101,7 @@ export class ControlInfo {
         cb(null, 'OK', result);
     }
 
-    public overwrite(obj: ControlInfo) {
+    public overwrite(obj: Partial<ControlInfo>) {
         if (obj.power !== undefined) this.power = obj.power;
         if (obj.mode !== undefined) this.mode = obj.mode;
         if (obj.targetTemperature !== undefined) this.targetTemperature = obj.targetTemperature;

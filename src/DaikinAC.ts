@@ -140,7 +140,7 @@ export class DaikinAC {
     /**
      * Changes the passed options, the rest remains unchanged
      */
-    public setACControlInfo(obj: ControlInfo, callback: defaultCallback<ControlInfo>) {
+    public setACControlInfo(obj: Partial<ControlInfo>, callback: defaultCallback<ControlInfo>) {
         this.clearUpdateTimeout();
         this._daikinRequest.getACControlInfo((err, _ret, completeValues) => {
             if (err || completeValues === null) {
