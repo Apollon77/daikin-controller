@@ -160,7 +160,9 @@ describe('Test DaikinAC', function () {
             };
             daikin.setACControlInfo(vals as ControlInfo, function (err, response) {
                 expect(err).toBeInstanceOf(Error);
-                expect(err?.message?.toString()).toEqual('Wrong Parameters in request: ret=PARAM NG,adv=');
+                expect(
+                    err?.message?.toString().startsWith('Wrong Parameters in request: ret=PARAM NG,adv='),
+                ).toBeTruthy();
                 expect(Object.keys(response!).length).toEqual(42);
                 expect(daikin.currentACControlInfo!.targetTemperature).toEqual(25);
                 expect(daikin.currentACControlInfo!.mode).toEqual(3);

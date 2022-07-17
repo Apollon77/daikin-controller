@@ -5,7 +5,8 @@ import { ControlInfo, DaikinACRequest, SetSpecialModeRequest, SpecialModeKind, S
 describe('Test DaikinACTypes', () => {
     it('normalizeValues', (done) => {
         const info = new ControlInfo();
-        (info.power = false), (info.mode = 3);
+        info.power = false;
+        info.mode = 3;
         info.specialMode = '';
         info.targetTemperature = 23;
         info.targetHumidity = 0;
@@ -108,7 +109,7 @@ describe('Test DaikinACTypes', () => {
             expect(daikinResponse).toBeNull();
             expect(ret).toEqual('PARAM NG');
             expect(err).toBeInstanceOf(Error);
-            expect(err?.message?.toString()).toEqual('Wrong Parameters in request: ret=PARAM NG,adv=');
+            expect(err?.message?.toString().startsWith('Wrong Parameters in request: ret=PARAM NG,adv=')).toBeTruthy();
             done();
         });
     });
