@@ -97,7 +97,7 @@ describe('Test DaikinACTypes', () => {
             expect(daikinResponse).toBeNull();
             expect(ret).toEqual('PARAM NG');
             expect(err).toBeInstanceOf(Error);
-            expect(err?.message?.toString()).toEqual('Wrong Parameters in request: ret=PARAM NG,adv=');
+            expect(err?.message?.toString().startsWith('Wrong Parameters in request: ret=PARAM NG,adv=')).toBeTruthy();
             done();
         });
     });

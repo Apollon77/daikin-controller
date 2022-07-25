@@ -1,4 +1,5 @@
 import { DaikinResponseCb } from './DaikinACRequest';
+import { RequestDict } from './models';
 
 export type ResponseDict = { [key: string]: string | number };
 
@@ -6,6 +7,7 @@ export class DaikinDataParser {
     public static processResponse<T>(
         inputData: Error | string | Buffer,
         callback?: DaikinResponseCb<T>,
+        requestDict: RequestDict = {},
     ): ResponseDict | null {
         if (inputData instanceof Error) {
             callback?.(new Error(`Error occured: ${(inputData as Error).message}`), null, null);
@@ -27,7 +29,13 @@ export class DaikinDataParser {
                 delete dict['ret'];
                 break;
             case 'PARAM NG':
-                callback?.(new Error('Wrong Parameters in request: ' + input), ret, null);
+                callback?.(
+                    new Error(
+                        `Wrong Parameters in request: ${input}\nRequest Parameters: ${JSON.stringify(requestDict)}`,
+                    ),
+                    ret,
+                    null,
+                );
                 return null;
             case 'ADV NG':
                 callback?.(new Error('Wrong ADV: ' + input), ret, null);

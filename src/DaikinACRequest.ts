@@ -169,9 +169,9 @@ export class DaikinACRequest {
             const state = typeof obj.state === 'string' ? parseInt(obj.state, 10) : obj.state;
             obj = new SetSpecialModeRequest(state, obj.kind);
         }
-
-        this.doPost(`http://${this.ip}/aircon/set_special_mode`, obj.getRequestDict(), (data, _res) => {
-            const dict = DaikinDataParser.processResponse(data, callback);
+        const requestDict = obj.getRequestDict();
+        this.doPost(`http://${this.ip}/aircon/set_special_mode`, requestDict, (data, _res) => {
+            const dict = DaikinDataParser.processResponse(data, callback, requestDict);
             if (dict !== null) SetCommandResponse.parseResponse(dict, callback);
         });
     }
@@ -198,8 +198,9 @@ export class DaikinACRequest {
     }
 
     public setCommonLED(ledOn: boolean, callback: DaikinResponseCb<SetCommandResponse>) {
-        this.doPost(`http://${this.ip}/common/set_led`, { led: ledOn ? 1 : 0 }, (data, _response) => {
-            const dict = DaikinDataParser.processResponse(data, callback);
+        const requestDict = { led: ledOn ? 1 : 0 };
+        this.doPost(`http://${this.ip}/common/set_led`, requestDict, (data, _response) => {
+            const dict = DaikinDataParser.processResponse(data, callback, requestDict);
             if (dict !== null) SetCommandResponse.parseResponse(dict, callback);
         });
     }
@@ -227,8 +228,9 @@ export class DaikinACRequest {
 
     public setACControlInfo(obj: ControlInfo, callback: DaikinResponseCb<SetCommandResponse>) {
         try {
-            this.doPost(`http://${this.ip}/aircon/set_control_info`, obj.getRequestDict(), (data, _response) => {
-                const dict = DaikinDataParser.processResponse(data, callback);
+            const requestDict = obj.getRequestDict();
+            this.doPost(`http://${this.ip}/aircon/set_control_info`, requestDict, (data, _response) => {
+                const dict = DaikinDataParser.processResponse(data, callback, requestDict);
                 if (dict !== null) SetCommandResponse.parseResponse(dict, callback);
             });
         } catch (e) {

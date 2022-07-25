@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
-import {BasicInfoResponse, ControlInfo, DaikinAC, ModelInfoResponse} from '../src';
+import { BasicInfoResponse, ControlInfo, DaikinAC, ModelInfoResponse } from '../src';
 import nock = require('nock');
 const logger = null;
 //logger = console.log;
@@ -166,7 +166,9 @@ describe('Test DaikinAC', () => {
             };
             daikin.setACControlInfo(vals as ControlInfo, function (err, response) {
                 expect(err).toBeInstanceOf(Error);
-                expect(err?.message?.toString()).toEqual('Wrong Parameters in request: ret=PARAM NG,adv=');
+                expect(
+                    err?.message?.toString().startsWith('Wrong Parameters in request: ret=PARAM NG,adv='),
+                ).toBeTruthy();
                 expect(response).not.toBeNull();
                 expect(daikin.currentACControlInfo).not.toBeNull();
                 expect(Object.keys(response!).length).toEqual(42);
