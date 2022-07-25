@@ -28,6 +28,12 @@ export class DaikinAC {
     get currentACSensorInfo(): SensorInfoResponse | null {
         return this._currentACSensorInfo;
     }
+    get logger(): Logger | null {
+        return this._logger;
+    }
+    set logger(value: Logger | null) {
+        this._logger = value;
+    }
     get updateInterval(): number | null {
         return this._updateInterval;
     }
@@ -61,6 +67,9 @@ export class DaikinAC {
             }
             this.getACModelInfo(callback);
         });
+    }
+    public setRequestLogger(value: Logger | null) {
+        this._daikinRequest.logger = value;
     }
     public setUpdate(updateInterval: number, callback: updateErrorCallback) {
         this._updateInterval = updateInterval;

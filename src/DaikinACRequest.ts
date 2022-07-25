@@ -33,7 +33,14 @@ export type ResponseHandler = (data: Error | string | Buffer, response?: unknown
 export type DaikinResponseCb<T> = (err: Error | null, ret: any | null, daikinResponse: T | null) => void;
 
 export class DaikinACRequest {
-    private readonly logger: Logger | null = null;
+    get logger(): Logger | null {
+        return this._logger;
+    }
+
+    set logger(value: Logger | null) {
+        this._logger = value;
+    }
+    private _logger: Logger | null = null;
     private defaultParameters: { [key: string]: any } = {};
     private readonly useGetToPost: boolean = false;
     private readonly ip: string;
