@@ -97,15 +97,17 @@ export class DaikinACRequest {
         });
 
         req.on('error', (err: any) => {
+            let errMessage: string;
             if (err.code) {
-                err = err.code;
+                errMessage = err.code;
             } else if (err.message) {
-                err = err.message;
+                errMessage = err.message;
             } else {
-                err = err.toString();
+                errMessage = err.toString();
             }
+            err.message = `Error while communicating with Daikin device: ${errMessage}`;
 
-            callback(new Error(`Error while communicating with Daikin device: ${err}`));
+            callback(err);
         });
     }
 
