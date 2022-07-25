@@ -272,6 +272,7 @@ export class DaikinAC {
         this.clearUpdateTimeout();
 
         this._daikinRequest.setACSpecialMode(obj, (errSet, _ret, daikinSetResponse) => {
+            this.initUpdateTimeout();
             if (this._logger) this._logger(JSON.stringify(daikinSetResponse));
             if (callback) callback(errSet, daikinSetResponse);
         });
