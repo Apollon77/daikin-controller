@@ -239,9 +239,11 @@ The following endpoints  (according to ...) are currently not implemented and ca
 ## Changelog
 
 ### __WORK IN PROGRESS__
-* (theimo1221) Correct typings
 * (theimo1221) Allow DaikinAC Logger modification after device being constructed
 * (theimo1221) Improve PARAM NG Error Messages
+* (Apollon77) Correctly re set update interval after setACSpecialMode
+* (Apollon77) Return the request error object with modified error message to also allow to access error.code and such additional information
+* (theimo1221) Correct typings
 
 ### 2.0.3 (2022-06-09)
 * (Apollon77) Add backward compatibility for setACSpecialMode
