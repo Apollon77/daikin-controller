@@ -237,6 +237,12 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_day_paower_ex
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (theimo1221) Correct typings
+* (theimo1221) Allow DaikinAC Logger modification after device being constructed
+* (theimo1221) Improve PARAM NG Error Messages
+
 ### 2.0.3 (2022-06-09)
 * (Apollon77) Add backward compatibility for setACSpecialMode
 * (Apollon77) Adjust exports
