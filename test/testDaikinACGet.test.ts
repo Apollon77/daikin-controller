@@ -3,7 +3,7 @@
 import { ControlInfo, DaikinAC } from '../src';
 import nock = require('nock');
 
-const debug = false;
+const debug = true;
 const logger = debug ? console.log : null;
 const options = { logger: logger, useGetToPost: true };
 
