@@ -12,6 +12,7 @@ import {
     YearPowerResponse,
 } from './models';
 import { DaikinACOptions, DaikinACRequest, Logger } from './DaikinACRequest';
+import { DemandControl } from './models/DemandControl';
 
 export * from './DaikinACTypes';
 
@@ -24,6 +25,9 @@ export class DaikinAC {
     }
     get currentACControlInfo(): ControlInfo | null {
         return this._currentACControlInfo;
+    }
+    get currentACDemandControl(): DemandControl | null {
+        return this._currentACDemandControl;
     }
     get currentACSensorInfo(): SensorInfoResponse | null {
         return this._currentACSensorInfo;
@@ -46,6 +50,7 @@ export class DaikinAC {
 
     private _currentACModelInfo: null | ModelInfoResponse = null;
     private _currentACControlInfo: null | ControlInfo = null;
+    private _currentACDemandControl: null | DemandControl = null;
     private _currentACSensorInfo: null | SensorInfoResponse = null;
 
     private _logger: null | Logger;
@@ -104,9 +109,16 @@ export class DaikinAC {
                 if (this._updateCallback) this._updateCallback(err);
                 return;
             }
-            this.getACSensorInfo((err, _info) => {
-                this.initUpdateTimeout();
-                if (this._updateCallback) this._updateCallback(err);
+            this.getACDemandControl((err, _info) => {
+                if (err) {
+                    this.initUpdateTimeout();
+                    if (this._updateCallback) this._updateCallback(err);
+                    return;
+                }
+                this.getACSensorInfo((err, _info) => {
+                    this.initUpdateTimeout();
+                    if (this._updateCallback) this._updateCallback(err);
+                });
             });
         });
     }
@@ -167,6 +179,15 @@ export class DaikinAC {
                     if (callback) callback(errFinal, daikinGetResponse);
                 });
             });
+        });
+    }
+
+    public getACDemandControl(callback: defaultCallback<DemandControl>) {
+        this._daikinRequest.getACDemandControl((err, _ret, daikinResponse) => {
+            if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            if (!err) this._currentACDemandControl = daikinResponse;
+
+            if (callback) callback(err, daikinResponse);
         });
     }
 
