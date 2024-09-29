@@ -50,8 +50,9 @@ export class DaikinAC {
 
     private _currentACModelInfo: null | ModelInfoResponse = null;
     private _currentACControlInfo: null | ControlInfo = null;
-    private _currentACDemandControl: null | DemandControl = null;
     private _currentACSensorInfo: null | SensorInfoResponse = null;
+    private _currentACDemandControl: null | DemandControl = null;
+    private _acDemandControlSupported = true;
 
     private _logger: null | Logger;
     private _daikinRequest: DaikinACRequest;
@@ -110,7 +111,7 @@ export class DaikinAC {
                 return;
             }
             this.getACSensorInfo((err, _info) => {
-                if (err) {
+                if (err || !this._acDemandControlSupported) {
                     this.initUpdateTimeout();
                     if (this._updateCallback) this._updateCallback(err);
                     return;
@@ -185,7 +186,12 @@ export class DaikinAC {
     public getACDemandControl(callback: defaultCallback<DemandControl>) {
         this._daikinRequest.getACDemandControl((err, _ret, daikinResponse) => {
             if (this._logger) this._logger(JSON.stringify(daikinResponse));
-            if (!err) this._currentACDemandControl = daikinResponse;
+            if (!err) {
+                this._currentACDemandControl = daikinResponse;
+            } else {
+                if (this._logger) this._logger(`Disabling demand control support: ${err.message}`);
+                this._acDemandControlSupported = false;
+            }
 
             if (callback) callback(err, daikinResponse);
         });
