@@ -116,9 +116,9 @@ export class DaikinAC {
                     if (this._updateCallback) this._updateCallback(err);
                     return;
                 }
-                this.getACDemandControl((err, _info) => {
+                this.getACDemandControl((_err, _info) => {
                     this.initUpdateTimeout();
-                    if (this._updateCallback) this._updateCallback(err);
+                    if (this._updateCallback) this._updateCallback(null);
                 });
             });
         });
