@@ -13,6 +13,7 @@ import {
 } from './models';
 import { SetCommandResponse, SetSpecialModeRequest } from './models';
 import { SpecialModeKind } from './DaikinACTypes';
+import { DemandControl } from './models/DemandControl';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const RestClient = require('node-rest-client').Client;
@@ -238,6 +239,13 @@ export class DaikinACRequest {
         } catch (e) {
             callback(e instanceof Error ? e : new Error(e as string), null, null);
         }
+    }
+
+    public getACDemandControl(callback: DaikinResponseCb<DemandControl>) {
+        this.doGet(`http://${this.ip}/aircon/get_demand_control`, {}, (data, _response) => {
+            const dict = DaikinDataParser.processResponse(data, callback);
+            if (dict !== null) DemandControl.parseResponse(dict, callback);
+        });
     }
 
     public getACSensorInfo(callback: DaikinResponseCb<SensorInfoResponse>) {
