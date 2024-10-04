@@ -50,13 +50,15 @@ export class DemandControl {
         if (this.mode !== 0 && this.mode !== 2)
             throw new Error('Currently only automatic(2) or manual mode(0) is supported');
 
-        // maxPower must be modulo 5 and between 40 and 100
-        if (this.maxPower < 40 || this.maxPower > 100 || this.maxPower % 5 !== 0)
-            throw new Error('maxPower must be between 40 and 100 and a multiply of 5');
+        // maxPower must be between 40 and 100
+        if (this.maxPower < 40 || this.maxPower > 100) throw new Error('maxPower must be between 40 and 100');
 
         dict['type'] = 1; // must be set to 1
         dict['mode'] = this.mode;
-        dict['max_pow'] = this.maxPower;
+
+        // maxPower must be a multiple of 5; round to the nearest valid value
+        dict['max_pow'] = Math.round(this.maxPower / 5) * 5;
+
         return dict;
     }
 }
