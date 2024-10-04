@@ -248,6 +248,18 @@ export class DaikinACRequest {
         });
     }
 
+    public setACDemandControl(obj: DemandControl, callback: DaikinResponseCb<SetCommandResponse>) {
+        try {
+            const requestDict = obj.getRequestDict();
+            this.doPost(`http://${this.ip}/aircon/set_demand_control`, requestDict, (data, _response) => {
+                const dict = DaikinDataParser.processResponse(data, callback, requestDict);
+                if (dict !== null) SetCommandResponse.parseResponse(dict, callback);
+            });
+        } catch (e) {
+            callback(e instanceof Error ? e : new Error(e as string), null, null);
+        }
+    }
+
     public getACSensorInfo(callback: DaikinResponseCb<SensorInfoResponse>) {
         this.doGet(`http://${this.ip}/aircon/get_sensor_info`, {}, (data, _response) => {
             const dict = DaikinDataParser.processResponse(data, callback);
