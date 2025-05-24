@@ -197,6 +197,30 @@ export class DaikinAC {
         });
     }
 
+    /**
+     * Changes the passed options, the rest remains unchanged
+     */
+    public setACDemandControl(obj: Partial<DemandControl>, callback: defaultCallback<DemandControl>) {
+        this.clearUpdateTimeout();
+        this._daikinRequest.getACDemandControl((err, _ret, completeValues) => {
+            if (err || completeValues === null) {
+                this.initUpdateTimeout();
+                if (callback) callback(err, completeValues);
+                return;
+            }
+            // we read the current data and change that set in values
+            completeValues.overwrite(obj);
+            this._daikinRequest.setACDemandControl(completeValues, (errSet, _ret, daikinSetResponse) => {
+                if (this._logger) this._logger(JSON.stringify(daikinSetResponse));
+                this.getACDemandControl((errGet, daikinGetResponse) => {
+                    this.initUpdateTimeout();
+                    const errFinal = errSet ? errSet : errGet;
+                    if (callback) callback(errFinal, daikinGetResponse);
+                });
+            });
+        });
+    }
+
     public getACSensorInfo(callback: defaultCallback<SensorInfoResponse>) {
         this._daikinRequest.getACSensorInfo((err, _ret, daikinResponse) => {
             if (this._logger) this._logger(JSON.stringify(daikinResponse));
