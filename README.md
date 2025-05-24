@@ -237,7 +237,7 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_day_paower_ex
 
 ## Changelog
-### 2.2.0 (2025-05-24)
+### __WORK IN PROGRESS__
 * (@Matze2) Add support to read and write demand control data
 
 ### 2.1.0 (2022-07-25)
