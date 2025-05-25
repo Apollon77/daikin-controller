@@ -52,7 +52,7 @@ export class DaikinAC {
     private _currentACControlInfo: null | ControlInfo = null;
     private _currentACSensorInfo: null | SensorInfoResponse = null;
     private _currentACDemandControl: null | DemandControl = null;
-    private _acDemandControlSupported = true;
+    private _acDemandControlSupported: null | boolean = null;
 
     private _logger: null | Logger;
     private _daikinRequest: DaikinACRequest;
@@ -111,13 +111,16 @@ export class DaikinAC {
                 return;
             }
             this.getACSensorInfo((err, _info) => {
-                if (err || !this._acDemandControlSupported) {
+                if (err || this._acDemandControlSupported === false) {
                     this.initUpdateTimeout();
                     if (this._updateCallback) this._updateCallback(err);
                     return;
                 }
-                this.getACDemandControl((_err, _info) => {
+                this.getACDemandControl((err, _info) => {
                     this.initUpdateTimeout();
+                    if (err && this._logger) {
+                        this._logger(`Ignore getACDemandControl error: ${JSON.stringify(err)}`);
+                    }
                     if (this._updateCallback) this._updateCallback(null);
                 });
             });
@@ -186,11 +189,12 @@ export class DaikinAC {
     public getACDemandControl(callback: defaultCallback<DemandControl>) {
         this._daikinRequest.getACDemandControl((err, _ret, daikinResponse) => {
             if (this._logger) this._logger(JSON.stringify(daikinResponse));
+            if (this._acDemandControlSupported === null) {
+                this._acDemandControlSupported = !err;
+                if (this._logger) this._logger(`Demand control support is ${!err ? '' : 'not '}working`);
+            }
             if (!err) {
                 this._currentACDemandControl = daikinResponse;
-            } else {
-                if (this._logger) this._logger(`Disabling demand control support: ${err.message}`);
-                this._acDemandControlSupported = false;
             }
 
             if (callback) callback(err, daikinResponse);
