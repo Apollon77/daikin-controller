@@ -16,7 +16,9 @@ export class SensorInfoResponse {
         result.outdoorTemperature = DaikinDataParser.resolveFloat(dict, 'otemp');
         result.error = DaikinDataParser.resolveInteger(dict, 'err');
         result.cmpfreq = DaikinDataParser.resolveInteger(dict, 'cmpfreq');
-        result.mompow = DaikinDataParser.resolveInteger(dict, 'mompow');
+        // Convert mompow from 0.1kW units to Watts by multiplying by 100
+        const rawMompow = DaikinDataParser.resolveInteger(dict, 'mompow');
+        result.mompow = rawMompow !== undefined && rawMompow !== null && typeof rawMompow === 'number' ? rawMompow * 100 : undefined;
         cb(null, 'OK', result);
     }
 }
