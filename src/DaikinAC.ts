@@ -238,7 +238,9 @@ export class DaikinAC {
             this._currentACSensorInfo = daikinResponse;
 
             // Apply high-level logic: set mompow to 0 when AC is powered off
-            if (!err && daikinResponse && this._currentACControlInfo?.power === false && 
+            // Only apply this if we have control info available
+            if (!err && daikinResponse && this._currentACControlInfo && 
+                this._currentACControlInfo.power === false && 
                 daikinResponse.mompow !== undefined) {
                 daikinResponse.mompow = 0;
             }
