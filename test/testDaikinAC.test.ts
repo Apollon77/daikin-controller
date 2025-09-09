@@ -49,6 +49,8 @@ describe('Test DaikinAC', () => {
             )
             .get('/aircon/get_sensor_info')
             .reply(200, 'ret=OK,htemp=21.5,hhum=-,otemp=-,err=0,cmpfreq=0,mompow=150')
+            .get('/aircon/get_demand_control')
+            .replyWithError('Not supported')
             .get('/aircon/get_control_info')
             .reply(
                 200,
