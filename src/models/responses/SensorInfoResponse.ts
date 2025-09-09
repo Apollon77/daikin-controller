@@ -7,6 +7,7 @@ export class SensorInfoResponse {
     public outdoorTemperature?: number;
     public error?: number;
     public cmpfreq?: number;
+    public mompow?: number;
 
     public static parseResponse(dict: ResponseDict, cb: DaikinResponseCb<SensorInfoResponse>): void {
         const result = new SensorInfoResponse();
@@ -15,6 +16,7 @@ export class SensorInfoResponse {
         result.outdoorTemperature = DaikinDataParser.resolveFloat(dict, 'otemp');
         result.error = DaikinDataParser.resolveInteger(dict, 'err');
         result.cmpfreq = DaikinDataParser.resolveInteger(dict, 'cmpfreq');
+        result.mompow = DaikinDataParser.resolveInteger(dict, 'mompow');
         cb(null, 'OK', result);
     }
 }
