@@ -16,9 +16,23 @@ export class SensorInfoResponse {
         result.outdoorTemperature = DaikinDataParser.resolveFloat(dict, 'otemp');
         result.error = DaikinDataParser.resolveInteger(dict, 'err');
         result.cmpfreq = DaikinDataParser.resolveInteger(dict, 'cmpfreq');
-        // Convert mompow from 0.1kW units to Watts by multiplying by 100
+        
+        // Parse mompow field with power state consideration
         const rawMompow = DaikinDataParser.resolveInteger(dict, 'mompow');
-        result.mompow = typeof rawMompow === 'number' ? rawMompow * 100 : undefined;
+        const powerState = DaikinDataParser.resolveInteger(dict, 'pow');
+        
+        if (typeof rawMompow === 'number') {
+            // If power state is 0 (AC is off), set mompow to 0 regardless of raw value
+            if (powerState === 0) {
+                result.mompow = 0;
+            } else {
+                // Convert mompow from 0.1kW units to Watts by multiplying by 100
+                result.mompow = rawMompow * 100;
+            }
+        } else {
+            result.mompow = undefined;
+        }
+        
         cb(null, 'OK', result);
     }
 }
