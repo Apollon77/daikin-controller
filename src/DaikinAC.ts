@@ -116,6 +116,13 @@ export class DaikinAC {
                     if (this._updateCallback) this._updateCallback(err);
                     return;
                 }
+                
+                // Apply high-level logic: set mompow to 0 when AC is powered off
+                if (this._currentACControlInfo?.power === false && 
+                    this._currentACSensorInfo?.mompow !== undefined) {
+                    this._currentACSensorInfo.mompow = 0;
+                }
+                
                 this.getACDemandControl((err, _info) => {
                     this.initUpdateTimeout();
                     if (err && this._logger) {
@@ -229,6 +236,12 @@ export class DaikinAC {
         this._daikinRequest.getACSensorInfo((err, _ret, daikinResponse) => {
             if (this._logger) this._logger(JSON.stringify(daikinResponse));
             this._currentACSensorInfo = daikinResponse;
+
+            // Apply high-level logic: set mompow to 0 when AC is powered off
+            if (!err && daikinResponse && this._currentACControlInfo?.power === false && 
+                daikinResponse.mompow !== undefined) {
+                daikinResponse.mompow = 0;
+            }
 
             if (callback) callback(err, daikinResponse);
         });

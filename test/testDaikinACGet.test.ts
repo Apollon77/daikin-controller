@@ -72,12 +72,12 @@ describe('Test DaikinAC', function () {
                 if (cnt == 1) {
                     expect(daikin.currentACControlInfo!.targetTemperature).toEqual(23);
                     expect(daikin.currentACSensorInfo!.indoorTemperature).toEqual(21.5);
-                    expect(daikin.currentACSensorInfo!.mompow).toEqual(15000);
+                    expect(daikin.currentACSensorInfo!.mompow).toEqual(0);
                 } else {
                     expect(cnt).toEqual(2);
                     expect(daikin.currentACControlInfo!.targetTemperature).toEqual(24);
                     expect(daikin.currentACSensorInfo!.indoorTemperature).toEqual(22.5);
-                    expect(daikin.currentACSensorInfo!.mompow).toEqual(20000);
+                    expect(daikin.currentACSensorInfo!.mompow).toEqual(0);
                     daikin.stopUpdate();
                     expect(req.isDone()).toBeTruthy();
                     expect(daikin.updateTimeout).toBeNull();
@@ -232,7 +232,7 @@ describe('Test DaikinAC', function () {
                     expect(Object.keys(response!).length).toEqual(6);
                     expect(response!.indoorTemperature).toEqual(21.5);
                     expect(response!.outdoorTemperature).toBeNaN();
-                    expect(response!.mompow).toEqual(30000);
+                    expect(response!.mompow).toEqual(0);
 
                     daikin.getACModelInfo(function (err, response) {
                         expect(err).toBeNull();
