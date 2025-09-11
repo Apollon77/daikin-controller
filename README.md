@@ -237,6 +237,11 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_day_paower_ex
 
 ## Changelog
+### 2.3.0 (2024-XX-XX)
+* (Apollon77) Add support for mompow (momentary power consumption) sensor field
+* (Apollon77) Convert mompow values from device units (0.1kW) to Watts for better usability
+* (Apollon77) Add power state logic to set mompow=0 when AC is powered off (pow=0)
+
 ### 2.2.2 (2025-05-25)
 * (@Matze2) Handles potential error case when using demand control data
 

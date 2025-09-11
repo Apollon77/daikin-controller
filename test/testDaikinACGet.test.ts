@@ -317,19 +317,19 @@ describe('Test DaikinAC', function () {
             .reply(200, 'ret=OK,htemp=21.5,hhum=-,otemp=-,err=0,cmpfreq=0,mompow=1');
         const daikin = new DaikinAC('127.0.0.1', options, function (err) {
             expect(err).toBeNull();
-            
+
             // First get control info to load power state
             daikin.getACControlInfo(function (err, controlResponse) {
                 expect(err).toBeNull();
                 expect(controlResponse!.power).toBeFalsy(); // Verify AC is off
-                
+
                 // Then get sensor info to test power state logic
                 daikin.getACSensorInfo(function (err, response) {
                     expect(err).toBeNull();
                     expect(Object.keys(response!).length).toEqual(6);
                     expect(response!.indoorTemperature).toEqual(21.5);
                     expect(response!.mompow).toEqual(0); // Should be 0 due to power state logic even though device reports 1
-                    
+
                     expect(req.isDone()).toBeTruthy();
                     done();
                 });

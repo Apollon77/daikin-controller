@@ -116,7 +116,7 @@ export class DaikinAC {
                     if (this._updateCallback) this._updateCallback(err);
                     return;
                 }
-                
+
                 this.getACDemandControl((err, _info) => {
                     this.initUpdateTimeout();
                     if (err && this._logger) {
@@ -233,9 +233,13 @@ export class DaikinAC {
 
             // Apply high-level logic: set mompow to 0 when AC is powered off
             // Only apply this if we have control info available
-            if (!err && daikinResponse && this._currentACControlInfo && 
-                this._currentACControlInfo.power === false && 
-                daikinResponse.mompow !== undefined) {
+            if (
+                !err &&
+                daikinResponse &&
+                this._currentACControlInfo &&
+                this._currentACControlInfo.power === false &&
+                daikinResponse.mompow !== undefined
+            ) {
                 daikinResponse.mompow = 0;
             }
 
