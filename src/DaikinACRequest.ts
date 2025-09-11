@@ -241,6 +241,96 @@ export class DaikinACRequest {
         }
     }
 
+    /**
+     * Sets AC control info with minimal parameter approach and automatic fallback.
+     * First tries to send only essential parameters (pow, mode, stemp, shum) plus changed values
+     * to avoid "ret=PARAM NG" errors on newer Daikin devices.
+     * If that fails, automatically falls back to the original full parameter approach.
+     */
+    public setACControlInfoWithMinimalApproach(
+        currentControlInfo: ControlInfo,
+        changedValues: Partial<ControlInfo>,
+        callback: DaikinResponseCb<SetCommandResponse>,
+    ) {
+        try {
+            // First, try minimal parameter approach
+            const minimalRequestDict = currentControlInfo.getMinimalRequestDict(changedValues);
+            if (this.logger) {
+                this.logger(
+                    `Trying minimal parameter approach with ${Object.keys(minimalRequestDict).length} parameters: ${JSON.stringify(minimalRequestDict)}`,
+                );
+            }
+
+            this.doPost(`http://${this.ip}/aircon/set_control_info`, minimalRequestDict, (data, _response) => {
+                // Parse response without error handling to check for PARAM NG
+                if (data instanceof Error) {
+                    callback(data, null, null);
+                    return;
+                }
+
+                let responseString: string;
+                if (Buffer.isBuffer(data)) {
+                    responseString = data.toString();
+                } else if (typeof data === 'string') {
+                    responseString = data;
+                } else {
+                    callback(new Error('Unexpected data type: ' + typeof data), null, null);
+                    return;
+                }
+
+                if (!responseString.includes('=')) {
+                    callback(new Error('Cannot parse response: ' + responseString), null, null);
+                    return;
+                }
+
+                const dict = DaikinDataParser.responseToDict(responseString);
+                const ret = dict['ret'];
+
+                if (ret === 'OK') {
+                    // Success with minimal approach
+                    if (this.logger) this.logger('Minimal parameter approach succeeded');
+                    delete dict['ret'];
+                    SetCommandResponse.parseResponse(dict, callback);
+                } else if (ret === 'PARAM NG') {
+                    // Minimal approach failed with PARAM NG, try fallback
+                    if (this.logger)
+                        this.logger('Minimal parameter approach failed with PARAM NG, falling back to full parameters');
+                    this.setACControlInfoFallback(currentControlInfo, callback);
+                } else {
+                    // Other error, use standard error processing
+                    const processedDict = DaikinDataParser.processResponse(
+                        responseString,
+                        callback,
+                        minimalRequestDict,
+                    );
+                    if (processedDict !== null) {
+                        SetCommandResponse.parseResponse(processedDict, callback);
+                    }
+                }
+            });
+        } catch (e) {
+            callback(e instanceof Error ? e : new Error(e as string), null, null);
+        }
+    }
+
+    /**
+     * Fallback method that uses the original full parameter approach.
+     */
+    private setACControlInfoFallback(obj: ControlInfo, callback: DaikinResponseCb<SetCommandResponse>) {
+        try {
+            const requestDict = obj.getRequestDict();
+            if (this.logger) {
+                this.logger(`Using fallback with full parameter set (${Object.keys(requestDict).length} parameters)`);
+            }
+            this.doPost(`http://${this.ip}/aircon/set_control_info`, requestDict, (data, _response) => {
+                const dict = DaikinDataParser.processResponse(data, callback, requestDict);
+                if (dict !== null) SetCommandResponse.parseResponse(dict, callback);
+            });
+        } catch (e) {
+            callback(e instanceof Error ? e : new Error(e as string), null, null);
+        }
+    }
+
     public getACDemandControl(callback: DaikinResponseCb<DemandControl>) {
         this.doGet(`http://${this.ip}/aircon/get_demand_control`, {}, (data, _response) => {
             const dict = DaikinDataParser.processResponse(data, callback);

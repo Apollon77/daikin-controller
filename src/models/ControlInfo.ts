@@ -146,6 +146,38 @@ export class ControlInfo {
         if (obj.error !== undefined) this.error = obj.error;
     }
 
+    /**
+     * Generates a minimal request dictionary with only essential parameters plus changed values.
+     * This helps avoid "ret=PARAM NG" errors on newer Daikin devices that reject too many parameters.
+     *
+     * @param changedValues - The partial ControlInfo object representing only the values that need to be changed
+     * @returns RequestDict containing only essential + changed parameters
+     */
+    public getMinimalRequestDict(changedValues: Partial<ControlInfo>): RequestDict {
+        const dict: RequestDict = {};
+        if (this.power === undefined) throw new Error('Required Field power do not exists');
+        if (this.mode === undefined) throw new Error('Required Field mode do not exists');
+        if (this.targetTemperature === undefined) throw new Error('Required Field targetTemperature do not exists');
+        if (this.targetHumidity === undefined) throw new Error('Required Field targetHumidity do not exists');
+
+        // Always include required fields
+        dict['pow'] = this.power ? 1 : 0;
+        dict['mode'] = this.mode;
+        dict['stemp'] =
+            typeof this.targetTemperature === 'number'
+                ? (Math.round(this.targetTemperature * 2) / 2).toFixed(1)
+                : this.targetTemperature;
+        dict['shum'] = this.targetHumidity;
+
+        // Include only changed optional fields (if they are actually being changed and have values)
+        if (changedValues.fanRate !== undefined && this.fanRate !== undefined) dict['f_rate'] = this.fanRate;
+        if (changedValues.fanDirection !== undefined && this.fanDirection !== undefined)
+            dict['f_dir'] = this.fanDirection;
+        if (changedValues.specialMode !== undefined && this.specialMode !== undefined) dict['adv'] = this.specialMode;
+
+        return dict;
+    }
+
     public getRequestDict(): RequestDict {
         const dict: RequestDict = {};
         if (this.power === undefined) throw new Error('Required Field power do not exists');

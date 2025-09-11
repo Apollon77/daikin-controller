@@ -163,7 +163,9 @@ export class DaikinAC {
     }
 
     /**
-     * Changes the passed options, the rest remains unchanged
+     * Changes the passed options, the rest remains unchanged.
+     * Uses minimal parameter approach first to avoid "ret=PARAM NG" errors,
+     * with automatic fallback to full parameters if needed.
      */
     public setACControlInfo(obj: Partial<ControlInfo>, callback: defaultCallback<ControlInfo>) {
         this.clearUpdateTimeout();
@@ -175,14 +177,20 @@ export class DaikinAC {
             }
             // we read the current data and change that set in values
             completeValues.overwrite(obj);
-            this._daikinRequest.setACControlInfo(completeValues, (errSet, _ret, daikinSetResponse) => {
-                if (this._logger) this._logger(JSON.stringify(daikinSetResponse));
-                this.getACControlInfo((errGet, daikinGetResponse) => {
-                    this.initUpdateTimeout();
-                    const errFinal = errSet ? errSet : errGet;
-                    if (callback) callback(errFinal, daikinGetResponse);
-                });
-            });
+
+            // Use minimal parameter approach with fallback
+            this._daikinRequest.setACControlInfoWithMinimalApproach(
+                completeValues,
+                obj,
+                (errSet, _ret, daikinSetResponse) => {
+                    if (this._logger) this._logger(JSON.stringify(daikinSetResponse));
+                    this.getACControlInfo((errGet, daikinGetResponse) => {
+                        this.initUpdateTimeout();
+                        const errFinal = errSet ? errSet : errGet;
+                        if (callback) callback(errFinal, daikinGetResponse);
+                    });
+                },
+            );
         });
     }
 
