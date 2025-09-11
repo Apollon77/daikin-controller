@@ -7,14 +7,14 @@ Daikin Controller is a TypeScript Node.js library for controlling Daikin Air Con
 ## Working Effectively
 
 ### Initial Setup
-- Install dependencies: `npm ci` -- takes ~20 seconds, includes automatic build via prepare script
-- Manual build: `npm run build` -- takes ~3 seconds, compiles TypeScript to lib/ directory
-- Run all validation: `npm test` -- takes ~15 seconds. NEVER CANCEL. Set timeout to 30+ minutes for safety.
+- Install dependencies: `npm ci` -- takes ~22 seconds, includes automatic build via prepare script
+- Manual build: `npm run build` -- takes ~1-3 seconds, compiles TypeScript to lib/ directory
+- Run all validation: `npm test` -- takes ~17 seconds. NEVER CANCEL. Set timeout to 30+ minutes for safety.
 
 ### Development Commands
 - **Format code**: `npm run prettier` -- takes <1 second, auto-formats all TypeScript files
 - **Lint with auto-fix**: `npm run lint-fix-all` -- takes ~3 seconds, may show TypeScript version warnings (safe to ignore)
-- **Local device testing**: `npm run quickTestLocalNetwork` -- runs network discovery, gracefully handles no devices found
+- **Local device testing**: `npm run quickTestLocalNetwork` -- runs network discovery, gracefully handles no devices found (~7 seconds)
 - **Manual build only**: `npm run build` -- compiles TypeScript sources from src/ to lib/
 
 ### Security and Dependencies
@@ -28,7 +28,8 @@ Always run these validation steps after making changes:
 1. **Build validation**: `npm run build` - verify TypeScript compilation succeeds
 2. **Test validation**: `npm test` - verify all 26 tests pass with >80% coverage
 3. **Format validation**: `npm run prettier` - ensure consistent code formatting
-4. **Library functionality**: Test that the built library exports work correctly:
+4. **Complete validation chain**: `npm run build && npm test && npm run prettier` - full validation (~17 seconds total)
+5. **Library functionality**: Test that the built library exports work correctly:
    ```bash
    node -e "const lib = require('./lib'); console.log('DaikinAC available:', typeof lib.DaikinAC);"
    ```
@@ -38,6 +39,7 @@ After making changes to the core library:
 - **Basic import test**: Verify main exports (DaikinAC, Power, Mode, FanRate enums) are accessible
 - **Discovery functionality**: Run `npm run quickTestLocalNetwork` to test network device discovery
 - **Type exports**: Ensure TypeScript definitions are properly generated in lib/ directory
+- **Extended library test**: Verify all key exports with `node -e "const { DaikinAC, Power, Mode, FanRate } = require('./lib'); console.log('✓ All exports loaded')"`
 
 ### CI Requirements
 - Always run `npm run prettier` before committing - CI will fail without proper formatting
@@ -46,11 +48,13 @@ After making changes to the core library:
 
 ## Build and Test Timing Expectations
 - **NEVER CANCEL** any build or test commands. All complete quickly:
-  - `npm ci`: ~20 seconds
-  - `npm run build`: ~3 seconds  
-  - `npm test`: ~15 seconds
+  - `npm ci`: ~22 seconds
+  - `npm run build`: ~1-3 seconds  
+  - `npm test`: ~17 seconds
   - `npm run prettier`: <1 second
   - `npm run lint-fix-all`: ~3 seconds
+  - `npm run quickTestLocalNetwork`: ~7 seconds
+  - `npm audit fix`: ~3 seconds (recommended for security updates)
 
 ## Project Structure
 
@@ -83,12 +87,14 @@ After making changes to the core library:
 2. Add corresponding tests in `test/`
 3. Run `npm run build && npm test && npm run prettier`
 4. Verify manual validation scenarios work
+5. Test extended library functionality to ensure exports remain accessible
 
 ### Fixing Issues
 1. Identify affected source files in `src/`
 2. Make minimal changes following existing patterns
 3. Update relevant tests if needed
 4. Validate with build/test/format commands
+5. Run complete validation chain before finishing
 
 ### Working with Device Communication
 - All device communication uses HTTP GET/POST to endpoints like `/common/basic_info`
@@ -105,6 +111,16 @@ const lib = require('./lib');
 console.log('✓ DaikinAC:', typeof lib.DaikinAC);
 console.log('✓ Power enum:', lib.Power);
 console.log('✓ Mode enum:', lib.Mode);
+"
+
+# Test extended exports including FanRate
+node -e "
+const { DaikinAC, Power, Mode, FanRate } = require('./lib');
+console.log('✓ DaikinAC constructor:', typeof DaikinAC);
+console.log('✓ Power values:', Power);
+console.log('✓ Mode values:', Mode); 
+console.log('✓ FanRate values:', FanRate);
+console.log('✓ Library successfully loaded and all main exports accessible');
 "
 ```
 
