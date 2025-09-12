@@ -237,6 +237,9 @@ The following endpoints  (according to ...) are currently not implemented and ca
 * /aircon/get_day_paower_ex
 
 ## Changelog
+### __WORK IN PROGRESS__
+* (@lleonis) Add support for mompow (momentary power consumption) sensor field and expose value in Watts
+
 ### 2.2.2 (2025-05-25)
 * (@Matze2) Handles potential error case when using demand control data
 
