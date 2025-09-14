@@ -239,12 +239,8 @@ The following endpoints  (according to ...) are currently not implemented and ca
 ## Changelog
 
 ### __WORK IN PROGRESS__
-* Replace node-rest-client with Node.js native fetch API
-  - Remove dependency on node-rest-client package
-  - Use built-in fetch() available since Node.js 18
-  - Improve error handling to show both error codes and messages when available
-  - Consolidate HTTP request logic into a shared private method
-  - Maintain all existing functionality and timeout behavior
+* IMPORTANT: Minimum Node.js version is now Node.Js 18.x
+* (@copilot) Replace node-rest-client with Node.js native fetch API
 
 ### 2.2.2 (2025-05-25)
 * (@Matze2) Handles potential error case when using demand control data
