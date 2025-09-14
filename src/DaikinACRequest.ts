@@ -16,8 +16,6 @@ import { SetCommandResponse, SetSpecialModeRequest } from './models';
 import { SpecialModeKind } from './DaikinACTypes';
 import { DemandControl } from './models/DemandControl';
 
-// Note: Using Node.js built-in fetch (available since Node.js 18)
-
 export type Logger = null | undefined | ((data: string | null) => void);
 
 export interface SetSpecialModeRequestObject {
@@ -60,29 +58,21 @@ export class DaikinACRequest {
         this.defaultParameters[key] = value;
     }
 
-    public doGet(url: string, parameters: RequestDict, callback: ResponseHandler) {
-        const reqParams = Object.assign({}, this.defaultParameters, parameters);
-
-        // Build URL with query parameters
-        const urlObj = new URL(url);
-        Object.entries(reqParams).forEach(([key, value]) => {
-            urlObj.searchParams.append(key, String(value));
-        });
-
-        if (this.logger) this.logger(`Call GET ${urlObj.toString()}`);
+    private fetch(url: string | URL, options: RequestInit, callback: ResponseHandler, logData?: any) {
+        if (this.logger) {
+            if (options.method === 'GET') {
+                this.logger(`Call GET ${url.toString()}`);
+            } else if (options.method === 'POST') {
+                const bodyInfo = logData ? JSON.stringify(logData) : options.body ? options.body.toString() : 'no body';
+                this.logger(`Call POST ${url} with ${bodyInfo}`);
+            }
+        }
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-        fetch(urlObj, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'text/plain',
-                'User-Agent': 'DaikinOnlineController/2.4.2 CFNetwork/978.0.7 Darwin/18.6.0',
-                Accept: '*/*',
-                'Accept-Language': 'de-de',
-                'Accept-Encoding': 'gzip, deflate',
-            },
+        fetch(url, {
+            ...options,
             signal: controller.signal,
         })
             .then(async (response) => {
@@ -95,6 +85,8 @@ export class DaikinACRequest {
                 let errMessage: string;
                 if (error.name === 'AbortError') {
                     errMessage = 'Timeout';
+                } else if (error.code && error.message) {
+                    errMessage = `${error.code}: ${error.message}`;
                 } else if (error.code) {
                     errMessage = error.code;
                 } else if (error.message) {
@@ -105,6 +97,31 @@ export class DaikinACRequest {
                 const err = new Error(`Error while communicating with Daikin device: ${errMessage}`);
                 callback(err);
             });
+    }
+
+    public doGet(url: string, parameters: RequestDict, callback: ResponseHandler) {
+        const reqParams = Object.assign({}, this.defaultParameters, parameters);
+
+        // Build URL with query parameters
+        const urlObj = new URL(url);
+        Object.entries(reqParams).forEach(([key, value]) => {
+            urlObj.searchParams.append(key, String(value));
+        });
+
+        this.fetch(
+            urlObj,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'text/plain',
+                    'User-Agent': 'DaikinOnlineController/2.4.2 CFNetwork/978.0.7 Darwin/18.6.0',
+                    Accept: '*/*',
+                    'Accept-Language': 'de-de',
+                    'Accept-Encoding': 'gzip, deflate',
+                },
+            },
+            callback,
+        );
     }
 
     public doPost(url: string, parameters: { [key: string]: any }, callback: ResponseHandler) {
@@ -120,45 +137,22 @@ export class DaikinACRequest {
             formData.append(key, String(value));
         });
 
-        if (this.logger) {
-            this.logger(`Call POST ${url} with ${JSON.stringify(reqParams)}`);
-        }
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000);
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'User-Agent': 'DaikinOnlineController/2.4.2 CFNetwork/978.0.7 Darwin/18.6.0',
-                Accept: '*/*',
-                'Accept-Language': 'de-de',
-                'Accept-Encoding': 'gzip, deflate',
+        this.fetch(
+            url,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'User-Agent': 'DaikinOnlineController/2.4.2 CFNetwork/978.0.7 Darwin/18.6.0',
+                    Accept: '*/*',
+                    'Accept-Language': 'de-de',
+                    'Accept-Encoding': 'gzip, deflate',
+                },
+                body: formData,
             },
-            body: formData,
-            signal: controller.signal,
-        })
-            .then(async (response) => {
-                clearTimeout(timeoutId);
-                const text = await response.text();
-                callback(text, response);
-            })
-            .catch((error) => {
-                clearTimeout(timeoutId);
-                let errMessage: string;
-                if (error.name === 'AbortError') {
-                    errMessage = 'Timeout';
-                } else if (error.code) {
-                    errMessage = error.code;
-                } else if (error.message) {
-                    errMessage = error.message;
-                } else {
-                    errMessage = error.toString();
-                }
-                const err = new Error(`Error while communicating with Daikin device: ${errMessage}`);
-                callback(err);
-            });
+            callback,
+            reqParams,
+        );
     }
 
     public setACSpecialMode(
