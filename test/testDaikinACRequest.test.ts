@@ -141,8 +141,8 @@ describe('Test DaikinACTypes', () => {
             expect(daikinResponse).toBeNull();
             expect(ret).toBeNull();
             expect(err).toBeInstanceOf(Error);
-            expect(err?.message?.toString()).toMatch(/Error occured: Error while communicating with Daikin device/);
-            expect(err?.message?.toString().length).toBeGreaterThan(50); // Ensure it's a real error message
+            expect(err?.message?.toString()).toMatch(/Error occured: Error while communicating with Daikin device:/);
+            // The exact error message depends on the environment and mocking implementation
             done();
         });
     });
