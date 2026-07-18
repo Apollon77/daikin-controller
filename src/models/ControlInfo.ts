@@ -146,6 +146,15 @@ export class ControlInfo {
         if (obj.error !== undefined) this.error = obj.error;
     }
 
+    /**
+     * Devices report '--' as the target temperature in modes without a numeric
+     * setpoint (fan/dry), which parses to NaN. Writing NaN back is rejected with
+     * PARAM NG, so serialise it as 'M', the alternative target the device accepts.
+     */
+    private static temperatureTarget(value: number | 'M'): number | 'M' {
+        return typeof value === 'number' && Number.isNaN(value) ? 'M' : value;
+    }
+
     public getRequestDict(): RequestDict {
         const dict: RequestDict = {};
         if (this.power === undefined) throw new Error('Required Field power do not exists');
@@ -155,21 +164,25 @@ export class ControlInfo {
 
         dict['pow'] = this.power ? 1 : 0;
         dict['mode'] = this.mode;
-        dict['stemp'] =
-            typeof this.targetTemperature === 'number'
-                ? (Math.round(this.targetTemperature * 2) / 2).toFixed(1)
-                : this.targetTemperature;
+        const stemp = ControlInfo.temperatureTarget(this.targetTemperature);
+        dict['stemp'] = typeof stemp === 'number' ? (Math.round(stemp * 2) / 2).toFixed(1) : stemp;
 
         dict['shum'] = this.targetHumidity;
         if (this.fanRate !== undefined) dict['f_rate'] = this.fanRate;
         if (this.fanDirection !== undefined) dict['f_dir'] = this.fanDirection;
         if (this.specialMode !== undefined) dict['adv'] = this.specialMode;
-        if (this.targetTemperatureMode1 !== undefined) dict['dt1'] = this.targetTemperatureMode1;
-        if (this.targetTemperatureMode2 !== undefined) dict['dt2'] = this.targetTemperatureMode2;
-        if (this.targetTemperatureMode3 !== undefined) dict['dt3'] = this.targetTemperatureMode3;
-        if (this.targetTemperatureMode4 !== undefined) dict['dt4'] = this.targetTemperatureMode4;
-        if (this.targetTemperatureMode5 !== undefined) dict['dt5'] = this.targetTemperatureMode5;
-        if (this.targetTemperatureMode7 !== undefined) dict['dt7'] = this.targetTemperatureMode7;
+        if (this.targetTemperatureMode1 !== undefined)
+            dict['dt1'] = ControlInfo.temperatureTarget(this.targetTemperatureMode1);
+        if (this.targetTemperatureMode2 !== undefined)
+            dict['dt2'] = ControlInfo.temperatureTarget(this.targetTemperatureMode2);
+        if (this.targetTemperatureMode3 !== undefined)
+            dict['dt3'] = ControlInfo.temperatureTarget(this.targetTemperatureMode3);
+        if (this.targetTemperatureMode4 !== undefined)
+            dict['dt4'] = ControlInfo.temperatureTarget(this.targetTemperatureMode4);
+        if (this.targetTemperatureMode5 !== undefined)
+            dict['dt5'] = ControlInfo.temperatureTarget(this.targetTemperatureMode5);
+        if (this.targetTemperatureMode7 !== undefined)
+            dict['dt7'] = ControlInfo.temperatureTarget(this.targetTemperatureMode7);
         if (this.targetHumidityMode1 !== undefined) dict['dh1'] = this.targetHumidityMode1;
         if (this.targetHumidityMode2 !== undefined) dict['dh2'] = this.targetHumidityMode2;
         if (this.targetHumidityMode3 !== undefined) dict['dh3'] = this.targetHumidityMode3;
@@ -194,7 +207,8 @@ export class ControlInfo {
         if (this.fanDirectionMode7 !== undefined) dict['dfd7'] = this.fanDirectionMode7;
         if (this.fanDirectionModeH !== undefined) dict['dfdh'] = this.fanDirectionModeH;
         if (this.modeB !== undefined) dict['b_mode'] = this.modeB;
-        if (this.targetTemperatureB !== undefined) dict['b_stemp'] = this.targetTemperatureB;
+        if (this.targetTemperatureB !== undefined)
+            dict['b_stemp'] = ControlInfo.temperatureTarget(this.targetTemperatureB);
         if (this.targetHumidityB !== undefined) dict['b_shum'] = this.targetHumidityB;
         if (this.fanRateB !== undefined) dict['b_f_rate'] = this.fanRateB;
         if (this.fanDirectionB !== undefined) dict['b_f_dir'] = this.fanDirectionB;

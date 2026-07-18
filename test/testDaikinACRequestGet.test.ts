@@ -54,6 +54,21 @@ describe('Test DaikinACTypes', () => {
         done();
     });
 
+    it('getRequestDict serialises NaN temperature targets as M', (done) => {
+        const info = new ControlInfo();
+        info.power = false;
+        info.mode = 6;
+        info.targetTemperature = NaN;
+        info.targetHumidity = 0;
+        info.targetTemperatureMode1 = NaN;
+        info.targetTemperatureB = NaN;
+        const res = info.getRequestDict();
+        expect(res.stemp).toEqual('M');
+        expect(res.dt1).toEqual('M');
+        expect(res.b_stemp).toEqual('M');
+        done();
+    });
+
     it('set_control_info Success', (done) => {
         const info = new ControlInfo();
         info.power = false;
@@ -127,6 +142,23 @@ describe('Test DaikinACTypes', () => {
             expect(Object.keys(daikinResponse!).length).toEqual(1);
             expect(ret).toEqual('OK');
             expect(err).toBeNull();
+            done();
+        });
+    });
+
+    it('get_sensor_info reports unavailable readings as undefined', (done) => {
+        const req = nock('http://127.0.0.1')
+            .get('/aircon/get_sensor_info')
+            .reply(200, 'ret=OK,htemp=-,hhum=-,otemp=10.0,err=0,cmpfreq=0');
+        const daikin = new DaikinACRequest('127.0.0.1', { useGetToPost: true });
+        daikin.getACSensorInfo((err, ret, daikinResponse) => {
+            expect(req.isDone()).toBeTruthy();
+            expect(err).toBeNull();
+            expect(ret).toEqual('OK');
+            expect(daikinResponse!.indoorTemperature).toBeUndefined();
+            expect(daikinResponse!.indoorHumidity).toBeUndefined();
+            expect(daikinResponse!.outdoorTemperature).toEqual(10);
+            expect(daikinResponse!.error).toEqual(0);
             done();
         });
     });
